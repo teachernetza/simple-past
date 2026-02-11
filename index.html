@@ -849,7 +849,270 @@
         if(pref === 'dark') document.body.classList.add('dark-mode');
     };
 
-</script>
+<script>
+    /* ========================================
+       TITAN ENGINE: ROBUST JS (AUDIO FIX)
+       ======================================== */
+    
+    // --- AUDIO ENGINE 2.0 (ROBUST) ---
+    const synth = window.speechSynthesis;
+    let voices = [];
+    let englishVoice = null;
 
-</body>
-</html>
+    // 1. Cargar voces cuando estén listas (Crítico para Mobile)
+    function loadVoices() {
+        voices = synth.getVoices();
+        // Intentar encontrar una voz preferente (Google US, Apple Samantha, etc.)
+        englishVoice = voices.find(voice => voice.lang === 'en-US' && voice.name.includes('Google')) 
+                    || voices.find(voice => voice.lang === 'en-US') 
+                    || voices.find(voice => voice.lang.includes('en'));
+    }
+
+    // Algunos navegadores cargan voces asíncronamente
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    loadVoices(); // Intento inicial
+
+    // 2. Función de Hablar Blindada
+    function speak(text) {
+        if (!text) return;
+        
+        // Cancelar audio anterior para evitar "cola" de espera
+        if (synth.speaking) synth.cancel();
+
+        // Asegurar que tenemos voces cargadas
+        if (voices.length === 0) loadVoices();
+
+        const utter = new SpeechSynthesisUtterance(text);
+        
+        // Asignar voz en inglés forzosa
+        if (englishVoice) {
+            utter.voice = englishVoice;
+        }
+        
+        utter.lang = 'en-US';
+        utter.rate = 0.9; // Velocidad natural
+        utter.volume = 1; 
+
+        // Manejo de errores silencioso
+        utter.onerror = function(e) { console.error('Audio error:', e); };
+
+        synth.speak(utter);
+    }
+    
+    // Desbloqueo inicial (necesario en iOS)
+    function unlockAudio() { 
+        if (synth.paused) synth.resume();
+        // No forzamos habla vacía para evitar glitches, solo reanudamos contexto
+    }
+
+    // --- INTERFACE UTILS ---
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+
+    function nav(id, btn) {
+        document.querySelectorAll('.lab-section').forEach(s => s.classList.remove('active'));
+        document.getElementById('sec-' + id).classList.add('active');
+        
+        if(btn) {
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if(window.innerWidth <= 900) toggleSidebar();
+        }
+        window.scrollTo(0,0);
+
+        // Progress Bar
+        const sections = ['intro', 'state', 'action', 'spelling', 'phonics', 'time', 'negative', 'workshop', 'dictation', 'quiz'];
+        const idx = sections.indexOf(id);
+        const pct = ((idx + 1) / sections.length) * 100;
+        document.getElementById('progressBar').style.width = `${pct}%`;
+
+        if(id === 'workshop') initWorkshop();
+        if(id === 'dictation') initDictation();
+        if(id === 'quiz') initQuiz();
+    }
+
+    // --- WORKSHOP LOGIC (Drag & Drop) ---
+    const wsLevels = [
+        { es: "Ella no trabajó ayer.", words: ["She", "didn't", "work", "yesterday", "."], correct: "She didn't work yesterday ." },
+        { es: "¿Estuviste feliz?", words: ["Were", "you", "happy", "?"], correct: "Were you happy ?" },
+        { es: "Yo viví en México.", words: ["I", "lived", "in", "Mexico", "."], correct: "I lived in Mexico ." },
+        { es: "¿Qué comiste?", words: ["What", "did", "you", "eat", "?"], correct: "What did you eat ?" },
+        { es: "Nosotros no estábamos en casa.", words: ["We", "weren't", "at", "home", "."], correct: "We weren't at home ." },
+        { es: "Ellos jugaron fútbol.", words: ["They", "played", "soccer", "."], correct: "They played soccer ." },
+        { es: "¿Ella llamó?", words: ["Did", "she", "call", "?"], correct: "Did she call ?" }
+    ];
+    let wsIndex = 0;
+
+    function initWorkshop() {
+        const data = wsLevels[wsIndex];
+        document.getElementById('targetSentence').innerText = data.es;
+        const bank = document.getElementById('chipBank');
+        const drop = document.getElementById('dropArea');
+        const fb = document.getElementById('wsFeedback');
+        
+        bank.innerHTML = ''; drop.innerHTML = ''; fb.style.display = 'none';
+
+        let chips = [...data.words].sort(() => Math.random() - 0.5);
+
+        chips.forEach(word => {
+            const chip = document.createElement('div');
+            chip.className = 'word-chip';
+            chip.innerText = word;
+            chip.onclick = () => {
+                if(chip.parentElement === bank) {
+                    drop.appendChild(chip);
+                    speak(word);
+                } else {
+                    bank.appendChild(chip);
+                }
+            };
+            bank.appendChild(chip);
+        });
+    }
+
+    function checkWorkshop() {
+        const attempt = Array.from(document.getElementById('dropArea').children).map(c => c.innerText).join(' ');
+        const correct = wsLevels[wsIndex].correct;
+        const fb = document.getElementById('wsFeedback');
+        
+        fb.style.display = 'block';
+        if(attempt === correct) {
+            fb.style.background = '#dcfce7'; fb.style.color = '#14532d';
+            fb.innerHTML = '<i class="fas fa-check-circle"></i> <b>Correct!</b> Structure verified.';
+            confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+            speak("Correct!");
+            setTimeout(() => {
+                wsIndex = (wsIndex + 1) % wsLevels.length;
+                initWorkshop();
+            }, 2000);
+        } else {
+            fb.style.background = '#fee2e2'; fb.style.color = '#7f1d1d';
+            fb.innerHTML = '<i class="fas fa-times-circle"></i> <b>Incorrect.</b> Check word order.';
+            speak("Try again");
+        }
+    }
+    
+    function resetWorkshop() { initWorkshop(); }
+
+    // --- DICTATION LOGIC ---
+    const dictationSentences = [
+        "She cooked dinner last night",
+        "They didn't play soccer",
+        "Where did you buy that",
+        "I was very tired yesterday",
+        "He stopped the car",
+        "Did you watch the movie",
+        "We lived in Paris for two years"
+    ];
+    let dicIndex = 0;
+
+    function initDictation() {
+        document.getElementById('dictInput').value = '';
+        document.getElementById('dictFeedback').style.display = 'none';
+    }
+
+    function playDictation() {
+        speak(dictationSentences[dicIndex]);
+    }
+
+    function checkDictation() {
+        const val = document.getElementById('dictInput').value.trim();
+        const target = dictationSentences[dicIndex];
+        const fb = document.getElementById('dictFeedback');
+        
+        fb.style.display = 'block';
+        
+        const cleanVal = val.replace(/[.,?]/g, '').toLowerCase().trim();
+        const cleanTarget = target.replace(/[.,?]/g, '').toLowerCase().trim();
+
+        if(cleanVal === cleanTarget) {
+            fb.style.background = '#dcfce7'; fb.style.color = '#14532d';
+            fb.innerHTML = `<b>Perfect!</b> "${target}"`;
+            confetti({ particleCount: 50, spread: 50 });
+            setTimeout(() => {
+                dicIndex = (dicIndex + 1) % dictationSentences.length;
+                initDictation();
+            }, 2500);
+        } else {
+            fb.style.background = '#fee2e2'; fb.style.color = '#7f1d1d';
+            fb.innerHTML = `<b>Not quite.</b> Listen closely.`;
+        }
+    }
+
+    // --- QUIZ LOGIC ---
+    const quizData = [
+        { q: "I ____ (watch) TV last night.", opts: ["watched", "watch", "watchd"], a: "watched" },
+        { q: "Where ____ (be) you yesterday?", opts: ["did", "was", "were"], a: "were" },
+        { q: "She ____ (not/go) to the party.", opts: ["didn't went", "didn't go", "no went"], a: "didn't go" },
+        { q: "____ (do) you like the movie?", opts: ["Did", "Were", "Was"], a: "Did" },
+        { q: "They ____ (stop) at the red light.", opts: ["stoped", "stopped", "stop"], a: "stopped" },
+        { q: "We ____ (study) for the exam.", opts: ["studyed", "studied", "studid"], a: "studied" },
+        { q: "He ____ (be) very hungry.", opts: ["were", "did", "was"], a: "was" },
+        { q: "What did you ____ (eat)?", opts: ["ate", "eat", "eated"], a: "eat" },
+        { q: "I ____ (try) to call you.", opts: ["tryed", "tried", "triyed"], a: "tried" },
+        { q: "It ____ (not/rain) yesterday.", opts: ["didn't rain", "didn't rained", "wasn't rain"], a: "didn't rain" }
+    ];
+    let qIndex = 0;
+    let score = 0;
+
+    function initQuiz() {
+        qIndex = 0; score = 0;
+        document.getElementById('quiz-ui').style.display = 'block';
+        document.getElementById('quiz-results').style.display = 'none';
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        if(qIndex >= quizData.length) return finishQuiz();
+        
+        const data = quizData[qIndex];
+        document.getElementById('questionBox').innerText = `${qIndex+1}. ${data.q}`;
+        
+        const optsBox = document.getElementById('optionsBox');
+        optsBox.innerHTML = '';
+        
+        data.opts.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-xl';
+            btn.style.marginTop = '10px';
+            btn.style.background = 'var(--surface)';
+            btn.style.color = 'var(--text-main)';
+            btn.style.border = '1px solid var(--border)';
+            btn.innerText = opt;
+            btn.onclick = () => handleAnswer(opt, data.a);
+            optsBox.appendChild(btn);
+        });
+
+        const pct = (qIndex / quizData.length) * 100;
+        document.getElementById('quizProgress').style.width = `${pct}%`;
+    }
+
+    function handleAnswer(selected, correct) {
+        if(selected === correct) score++;
+        qIndex++;
+        renderQuestion();
+    }
+
+    function finishQuiz() {
+        document.getElementById('quiz-ui').style.display = 'none';
+        document.getElementById('quiz-results').style.display = 'block';
+        document.getElementById('finalScore').innerText = `Score: ${score} / 10`;
+        if(score >= 8) {
+            confetti({ particleCount: 200, spread: 100 });
+            speak("Congratulations! Certification complete.");
+        } else {
+            speak("Keep practicing.");
+        }
+    }
+
+    // Inicialización
+    window.onload = () => {
+        const pref = localStorage.getItem('rators-premium-theme');
+        if(pref === 'dark') document.body.classList.add('dark-mode');
+        
+        // Forzar carga de voces al iniciar
+        loadVoices();
+    };
+</script>
