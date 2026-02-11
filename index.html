@@ -9,635 +9,662 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Nunito+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <style>
         /* ========================================
-           DESIGN SYSTEM: TITAN MOBILE EDITION
+           DESIGN SYSTEM: TITAN v2 (High Contrast)
            ======================================== */
         :root {
-            /* Core Palette */
-            --bg: #f8fafc;
-            --surface: #ffffff;
-            --surface-2: #f1f5f9;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
+            /* --- LIGHT MODE PALETTE --- */
+            --bg-page: #f8fafc;       /* Slate 50 */
+            --bg-card: #ffffff;       /* White */
+            --bg-element: #f1f5f9;    /* Slate 100 */
+            --text-primary: #0f172a;  /* Slate 900 */
+            --text-secondary: #475569;/* Slate 600 */
+            --border-line: #e2e8f0;   /* Slate 200 */
 
-            /* Functional Colors (Dual Core System) */
-            --brand: #3730a3;
-            --was-color: #7c3aed; /* Violet */
-            --was-bg: rgba(124, 58, 237, 0.08);
-            --did-color: #059669; /* Emerald */
-            --did-bg: rgba(5, 150, 105, 0.08);
-            --time-color: #f59e0b; /* Amber */
-            --alert: #ef4444; /* Red */
-            --success: #22c55e; /* Green */
-
-            /* UI Effects */
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
-            --shadow-float: 0 20px 40px -5px rgba(0, 0, 0, 0.12);
-            --radius-md: 16px;
-            --radius-lg: 24px;
+            /* --- FUNCTIONAL COLORS --- */
+            --brand: #4f46e5;         /* Indigo 600 */
+            --brand-glow: rgba(79, 70, 229, 0.3);
             
-            /* Ribbon Colors */
-            --footer-bg: #1e293b;
-            --footer-text: #94a3b8;
+            /* DUAL CORE SYSTEM */
+            --was-color: #7c3aed;     /* Violet 600 */
+            --was-bg: #f5f3ff;        /* Violet 50 */
+            --was-border: #ddd6fe;    /* Violet 200 */
+            
+            --did-color: #059669;     /* Emerald 600 */
+            --did-bg: #ecfdf5;        /* Emerald 50 */
+            --did-border: #a7f3d0;    /* Emerald 200 */
+            
+            /* UTILS */
+            --time-color: #d97706;    /* Amber 600 */
+            --danger: #dc2626;        /* Red 600 */
+            --danger-bg: #fef2f2;     /* Red 50 */
+            --success: #16a34a;       /* Green 600 */
+
+            /* FOOTER */
+            --footer-bg: #1e293b;     /* Slate 800 */
+            --footer-text: #94a3b8;   /* Slate 400 */
+
+            /* SHADOWS & RADIUS */
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-sm: 12px;
+            --radius-lg: 24px;
         }
 
-        .dark-mode {
-            --bg: #020617;
-            --surface: #1e293b;
-            --surface-2: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --brand: #818cf8;
-            --footer-bg: #0f172a;
+        /* --- DARK MODE PALETTE (Calibrated for Visibility) --- */
+        body.dark-mode {
+            --bg-page: #020617;       /* Slate 950 */
+            --bg-card: #1e293b;       /* Slate 800 */
+            --bg-element: #334155;    /* Slate 700 */
+            --text-primary: #f8fafc;  /* Slate 50 */
+            --text-secondary: #cbd5e1;/* Slate 300 */
+            --border-line: #475569;   /* Slate 600 */
+
+            --brand: #818cf8;         /* Indigo 400 */
+            
+            --was-color: #a78bfa;     /* Violet 400 */
+            --was-bg: rgba(124, 58, 237, 0.15);
+            --was-border: rgba(124, 58, 237, 0.3);
+            
+            --did-color: #34d399;     /* Emerald 400 */
+            --did-bg: rgba(5, 150, 105, 0.15);
+            --did-border: rgba(5, 150, 105, 0.3);
+            
+            --time-color: #fbbf24;    /* Amber 400 */
+            --danger: #f87171;        /* Red 400 */
+            --danger-bg: rgba(220, 38, 38, 0.15);
+            
+            --footer-bg: #0f172a;     /* Slate 900 */
         }
 
-        /* --- Global Reset & Typography --- */
+        /* --- GLOBAL RESET --- */
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         
         body { 
             font-family: 'Nunito Sans', sans-serif; 
-            background: var(--bg); 
-            color: var(--text-main); 
-            line-height: 1.6;
+            background-color: var(--bg-page); 
+            color: var(--text-primary); 
+            line-height: 1.7;
+            font-size: 17px;
             overflow-x: hidden;
-            transition: background 0.4s ease, color 0.4s ease;
-            display: flex;
-            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
             min-height: 100vh;
+            display: flex; flex-direction: column;
         }
 
-        h1, h2, h3, h4 { font-family: 'Lora', serif; font-weight: 700; line-height: 1.2; }
+        /* Typography */
+        h1, h2, h3, h4 { font-family: 'Lora', serif; font-weight: 700; line-height: 1.2; color: var(--text-primary); }
         .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+        
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; }
 
-        /* --- Animations --- */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulseAlert { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
-
-        /* --- HEADER (Fixed) --- */
-        header {
-            position: fixed; top: 0; left: 0; width: 100%; height: 70px; z-index: 100;
-            background: var(--surface); border-bottom: 1px solid var(--border);
+        /* --- HEADER --- */
+        .top-bar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 72px; z-index: 1000;
+            background: var(--bg-card); border-bottom: 1px solid var(--border-line);
             display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-card); transition: 0.3s;
         }
         
-        .brand-area { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
-        .brand-area img { height: 32px; width: 32px; border-radius: 8px; }
+        .brand-logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.2rem; color: var(--text-primary); }
+        .brand-logo img { width: 36px; height: 36px; border-radius: 8px; }
         
-        .progress-track { flex-grow: 1; max-width: 300px; margin: 0 2rem; height: 6px; background: var(--surface-2); border-radius: 10px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--was-color), var(--did-color)); transition: width 0.5s ease; }
+        .progress-wrapper { flex: 1; max-width: 300px; margin: 0 2rem; height: 6px; background: var(--bg-element); border-radius: 10px; overflow: hidden; display: none; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--was-color), var(--did-color)); transition: width 0.6s ease; }
+        
+        /* Show progress only on larger screens */
+        @media(min-width: 768px) { .progress-wrapper { display: block; } }
 
-        .menu-trigger { font-size: 1.4rem; color: var(--text-main); cursor: pointer; display: none; padding: 10px; }
+        .hamburger { font-size: 1.5rem; color: var(--text-primary); cursor: pointer; padding: 8px; border-radius: 8px; }
+        .hamburger:hover { background: var(--bg-element); }
 
-        /* --- SIDEBAR NAV --- */
+        /* --- SIDEBAR NAVIGATION --- */
         .sidebar {
-            position: fixed; top: 70px; left: 0; height: calc(100vh - 70px); width: 280px;
-            background: var(--surface); border-right: 1px solid var(--border);
-            padding: 2rem 1.5rem; z-index: 90; overflow-y: auto;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed; top: 72px; left: 0; width: 280px; height: calc(100vh - 72px);
+            background: var(--bg-card); border-right: 1px solid var(--border-line);
+            padding: 1.5rem; overflow-y: auto; z-index: 900;
+            transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .sidebar.open { transform: translateX(0); }
         
-        .nav-section { margin-bottom: 1.5rem; }
-        .nav-header { 
-            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; 
-            color: var(--text-muted); font-weight: 800; margin-bottom: 0.8rem; padding-left: 12px;
+        /* Desktop: Always open */
+        @media(min-width: 1024px) { 
+            .sidebar { transform: translateX(0); } 
+            .hamburger { display: none; }
         }
 
+        .nav-group { margin-bottom: 2rem; }
+        .nav-label { 
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; 
+            color: var(--text-secondary); font-weight: 800; margin-bottom: 0.8rem; padding-left: 12px;
+        }
+        
         .nav-btn {
-            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
-            border-radius: 12px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem;
-            cursor: pointer; transition: 0.2s; margin-bottom: 4px;
+            display: flex; align-items: center; gap: 14px; padding: 12px 16px; width: 100%;
+            border: none; background: transparent; color: var(--text-secondary); font-weight: 600;
+            border-radius: 12px; cursor: pointer; transition: 0.2s; text-align: left; font-size: 0.95rem;
         }
-        .nav-btn:hover { background: var(--surface-2); color: var(--text-main); }
-        .nav-btn.active { background: var(--brand); color: white; box-shadow: var(--shadow-md); }
-        .nav-btn i { width: 24px; text-align: center; font-size: 1.1rem; }
+        .nav-btn:hover { background: var(--bg-element); color: var(--text-primary); }
+        .nav-btn.active { background: var(--brand); color: #ffffff; box-shadow: var(--shadow-card); }
+        .nav-btn i { width: 24px; text-align: center; }
 
-        /* --- MAIN CONTENT AREA --- */
-        .main-container {
-            margin-left: 280px; padding: 100px 2rem 4rem; max-width: 1000px; margin-right: auto; flex-grow: 1; width: calc(100% - 280px);
+        /* --- MAIN CONTENT --- */
+        .content-wrapper {
+            margin-top: 72px; padding: 2rem; width: 100%;
+            transition: margin-left 0.3s ease;
         }
+        @media(min-width: 1024px) { .content-wrapper { margin-left: 280px; width: calc(100% - 280px); padding: 3rem 4rem; } }
 
-        .lab-section { display: none; animation: slideUp 0.6s ease; }
+        .lab-section { display: none; animation: fadeUp 0.5s ease; max-width: 900px; margin: 0 auto; }
         .lab-section.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- CARDS & PANELS --- */
-        .content-card {
-            background: var(--surface); border-radius: var(--radius-lg); padding: 3rem;
-            border: 1px solid var(--border); box-shadow: var(--shadow-md);
-            margin-bottom: 2.5rem; position: relative; overflow: hidden;
+        /* --- CARDS --- */
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border-line); border-radius: var(--radius-lg);
+            padding: 2.5rem; margin-bottom: 2rem; box-shadow: var(--shadow-card); position: relative;
         }
         
-        .tag-badge {
-            display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; 
-            font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem;
+        .badge {
+            display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;
         }
-        .badge-purple { background: var(--was-bg); color: var(--was-color); border: 1px solid rgba(124, 58, 237, 0.2); }
-        .badge-green { background: var(--did-bg); color: var(--did-color); border: 1px solid rgba(5, 150, 105, 0.2); }
-
-        h1 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem; color: var(--text-main); }
-        h1 span { color: var(--was-color); }
-        h2 { font-size: 1.8rem; margin-bottom: 1rem; margin-top: 1.5rem; color: var(--text-main); }
-        p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        .badge-was { background: var(--was-bg); color: var(--was-color); border: 1px solid var(--was-border); }
+        .badge-did { background: var(--did-bg); color: var(--did-color); border: 1px solid var(--did-border); }
 
         /* --- INTERACTIVE ELEMENTS --- */
         
-        /* Dual Core Visuals */
-        .core-selector { display: flex; gap: 20px; margin: 2rem 0; flex-wrap: wrap; }
-        .core-option {
-            flex: 1; padding: 2rem; border-radius: 20px; text-align: center; min-width: 250px;
-            border: 2px solid transparent; transition: 0.3s; cursor: pointer;
+        /* 1. Dual Core Visuals */
+        .core-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin: 2rem 0; }
+        .core-card {
+            padding: 2rem; border-radius: 20px; border: 2px solid transparent; text-align: center;
+            cursor: pointer; transition: 0.3s; background: var(--bg-element);
         }
-        .core-option:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .core-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
         
-        .opt-was { background: var(--was-bg); border-color: rgba(124, 58, 237, 0.2); }
-        .opt-was h3 { color: var(--was-color); font-size: 1.5rem; margin-bottom: 10px; }
+        .core-card.was { border-color: var(--was-color); background: var(--was-bg); }
+        .core-card.did { border-color: var(--did-color); background: var(--did-bg); }
         
-        .opt-did { background: var(--did-bg); border-color: rgba(5, 150, 105, 0.2); }
-        .opt-did h3 { color: var(--did-color); font-size: 1.5rem; margin-bottom: 10px; }
+        .core-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
 
-        /* Formula Builder */
-        .formula-box {
-            background: var(--surface-2); border-radius: 16px; padding: 1.5rem;
-            display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center;
-            margin-bottom: 1.5rem; font-family: 'JetBrains Mono';
+        /* 2. Formula Builder */
+        .formula-row {
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 1.5rem;
+            background: var(--bg-element); border-radius: 16px; margin-bottom: 1.5rem; font-family: 'JetBrains Mono';
         }
-        .block {
-            padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 0.95rem;
-            background: var(--surface); border: 1px solid var(--border); box-shadow: 0 2px 0 rgba(0,0,0,0.05);
-        }
+        .block { padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; background: var(--bg-card); border: 1px solid var(--border-line); color: var(--text-primary); }
         .block.hl-was { background: var(--was-color); color: white; border-color: var(--was-color); }
         .block.hl-did { background: var(--did-color); color: white; border-color: var(--did-color); }
-        .block.hl-warn { background: var(--alert); color: white; border-color: var(--alert); animation: pulseAlert 2s infinite; }
+        .block.hl-alert { background: var(--danger); color: white; border-color: var(--danger); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        /* Audio Buttons */
-        .btn-audio {
-            background: var(--surface); border: 1px solid var(--border); width: 40px; height: 40px;
-            border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
-            color: var(--text-muted); transition: 0.2s; font-size: 1rem;
+        /* 3. Audio Button */
+        .audio-btn {
+            width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-line);
+            background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; transition: 0.2s;
         }
-        .btn-audio:hover { background: var(--text-main); color: var(--surface); transform: scale(1.1); }
+        .audio-btn:hover { background: var(--text-primary); color: var(--bg-card); transform: scale(1.1); }
 
-        /* Table Styles */
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; }
-        .data-table th { text-align: left; padding: 15px; color: var(--text-muted); border-bottom: 2px solid var(--border); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-        .data-table td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 1rem; }
-        .data-table tr:last-child td { border-bottom: none; }
+        /* 4. Tables (Fixed for Dark Mode) */
+        .table-container { overflow-x: auto; margin-top: 1.5rem; }
+        .data-table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        .data-table th { 
+            text-align: left; padding: 15px; border-bottom: 2px solid var(--border-line);
+            color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; 
+        }
+        .data-table td { padding: 15px; border-bottom: 1px solid var(--border-line); color: var(--text-primary); }
+        .data-table tr:hover { background: var(--bg-element); }
 
-        /* Phonics Cards */
-        .phonics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-top: 2rem; }
-        .sound-card { 
-            padding: 25px; border-radius: 16px; background: var(--surface); text-align: center; 
-            border: 2px solid var(--border); cursor: pointer; transition: 0.3s;
+        /* 5. Inputs (Fixed for Dark Mode) */
+        input[type="text"] {
+            width: 100%; padding: 15px; border-radius: 12px; border: 2px solid var(--border-line);
+            background: var(--bg-card); color: var(--text-primary); font-family: 'JetBrains Mono';
+            font-size: 1.2rem; text-align: center; transition: 0.3s;
         }
-        .sound-card:hover { border-color: var(--did-color); background: var(--did-bg); transform: translateY(-3px); }
-        .ipa-symbol { font-size: 2.5rem; font-weight: 800; color: var(--did-color); display: block; margin-bottom: 10px; font-family: 'Lora'; }
+        input[type="text"]:focus { border-color: var(--brand); outline: none; }
+        input::placeholder { color: var(--text-secondary); opacity: 0.5; }
 
-        /* Workshop & Interactive */
-        .workshop-stage {
-            background: var(--surface-2); border: 2px dashed var(--border); border-radius: 20px;
-            padding: 2rem; text-align: center; margin-top: 2rem;
-        }
-        .slot-container { 
-            display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; min-height: 70px; 
-            margin-bottom: 2rem; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 12px;
-        }
-        .chip-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-        .word-chip {
-            padding: 12px 24px; background: var(--surface); border: 1px solid var(--border);
-            border-radius: 12px; font-family: 'JetBrains Mono'; font-weight: 700; cursor: pointer;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.05); transition: 0.1s; user-select: none; font-size: 1rem;
-        }
-        .word-chip:active { transform: translateY(4px); box-shadow: none; }
-
-        /* Action Buttons */
+        /* 6. Buttons */
         .btn-xl {
-            width: 100%; padding: 20px; border-radius: 16px; border: none; font-size: 1.1rem;
-            font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 12px;
-            background: var(--brand); color: white; margin-top: 2rem; box-shadow: var(--shadow-md);
+            width: 100%; padding: 18px; border-radius: 16px; border: none; font-size: 1.1rem;
+            font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: var(--text-primary); color: var(--bg-page); margin-top: 2rem;
         }
+        .btn-xl:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
         .btn-xl:active { transform: scale(0.98); }
         
-        /* Dictation Input */
-        .input-dict {
-            width: 100%; border: none; border-bottom: 3px solid var(--border); background: transparent;
-            font-size: 1.4rem; text-align: center; padding: 15px; font-family: 'JetBrains Mono'; color: var(--text-main);
-            outline: none; transition: 0.3s; margin: 20px 0; border-radius: 0;
-        }
-        .input-dict:focus { border-color: var(--brand); }
+        .btn-secondary { background: transparent; border: 2px solid var(--border-line); color: var(--text-primary); }
+        .btn-secondary:hover { background: var(--bg-element); }
 
-        /* --- THE RIBBON (FOOTER) --- */
-        .info-ribbon {
-            background: var(--footer-bg); color: var(--footer-text); padding: 4rem 2rem 2rem;
-            margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);
+        /* 7. Workshop Drag & Drop */
+        .workshop-zone {
+            background: var(--bg-element); border: 2px dashed var(--border-line); border-radius: 20px;
+            padding: 20px; margin: 20px 0; min-height: 80px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center;
         }
-        .ribbon-grid {
+        .chip {
+            padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-line);
+            border-radius: 10px; color: var(--text-primary); font-weight: 700; cursor: pointer;
+            box-shadow: var(--shadow-card); user-select: none; transition: 0.2s;
+        }
+        .chip:active { transform: scale(0.95); }
+
+        /* 8. Phonics Cards */
+        .sound-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 2rem; }
+        .sound-box { 
+            padding: 25px; border-radius: 16px; background: var(--bg-card); border: 2px solid var(--border-line);
+            text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .sound-box:hover { border-color: var(--did-color); background: var(--did-bg); }
+        .ipa { font-family: 'Lora'; font-size: 2.5rem; font-weight: 700; color: var(--did-color); display: block; margin-bottom: 10px; }
+
+        /* --- FOOTER RIBBON (Dark & Professional) --- */
+        .footer-ribbon {
+            background: var(--footer-bg); color: var(--footer-text);
+            padding: 4rem 2rem 2rem; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .footer-grid {
             max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem;
         }
-        .ribbon-col h5 { color: white; font-size: 1.1rem; margin-bottom: 1rem; font-family: 'Lora'; }
-        .ribbon-col p, .ribbon-col li { font-size: 0.9rem; line-height: 1.8; opacity: 0.8; list-style: none; }
-        .ribbon-col a { color: var(--brand); text-decoration: none; font-weight: 700; }
-        .legal-line {
-            max-width: 1100px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);
-            text-align: center; font-size: 0.8rem; opacity: 0.5; font-family: 'JetBrains Mono'; letter-spacing: 1px;
+        .footer-col h5 { color: #ffffff; font-size: 1.1rem; margin-bottom: 1.2rem; font-family: 'Lora'; }
+        .footer-col p, .footer-col a { font-size: 0.9rem; line-height: 1.8; color: inherit; text-decoration: none; display: block; margin-bottom: 0.5rem; }
+        .footer-col a:hover { color: #ffffff; }
+        .legal {
+            max-width: 1100px; margin: 4rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center; font-size: 0.75rem; font-family: 'JetBrains Mono'; letter-spacing: 1px; opacity: 0.6;
         }
 
-        /* --- MOBILE OPTIMIZATION --- */
-        @media (max-width: 900px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); box-shadow: 5px 0 30px rgba(0,0,0,0.2); }
-            .menu-trigger { display: block; }
-            .main-container { margin-left: 0; width: 100%; padding: 90px 1.2rem 3rem; }
-            .progress-track { display: none; } /* Hide on mobile to save header space */
-            
-            .content-card { padding: 2rem 1.5rem; }
-            h1 { font-size: 2.2rem; }
-            .core-selector { flex-direction: column; gap: 15px; }
-            .phonics-grid { grid-template-columns: 1fr; }
-            
-            /* Better touch targets */
-            .nav-btn { padding: 16px; font-size: 1rem; }
-            .word-chip { padding: 14px 20px; font-size: 1.1rem; }
-        }
+        /* --- Feedback Box --- */
+        .feedback { display: none; padding: 15px; border-radius: 12px; margin-top: 20px; font-weight: 600; text-align: center; animation: fadeUp 0.3s; }
+        .feedback.success { background: var(--did-bg); color: var(--did-color); border: 1px solid var(--did-border); }
+        .feedback.error { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
+
     </style>
 </head>
-<body onclick="unlockAudio()">
+<body onload="initSystem()">
 
-<header>
-    <div class="brand-area">
-        <i class="fas fa-bars menu-trigger" onclick="toggleSidebar()"></i>
+<div class="top-bar">
+    <div class="brand-logo">
+        <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
         <img src="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w128" alt="Logo">
-        <span>Rators Labs</span>
+        <span>Past Simple Titan</span>
     </div>
-    <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
-</header>
+    <div class="progress-wrapper"><div class="progress-fill" id="progressBar"></div></div>
+</div>
 
 <nav class="sidebar" id="sidebar">
-    <div style="padding: 0 10px 20px;">
-        <h4 style="color:var(--text-main); margin-bottom:5px;">Past Simple Titan</h4>
-        <p style="font-size:0.8rem; color:var(--text-muted);">Protocolo Dual Core</p>
+    <div class="nav-group">
+        <div class="nav-label">Core Concepts</div>
+        <button class="nav-btn active" onclick="nav('intro', this)"><i class="fas fa-cube"></i> Intro & Logic</button>
+        <button class="nav-btn" onclick="nav('state', this)"><i class="fas fa-ghost"></i> The State (Was/Were)</button>
+        <button class="nav-btn" onclick="nav('action', this)"><i class="fas fa-running"></i> The Action (Regulars)</button>
     </div>
-
-    <div class="nav-section">
-        <div class="nav-header">Theory Core</div>
-        <div class="nav-btn active" onclick="nav('intro', this)"><i class="fas fa-cube"></i> Intro & Logic</div>
-        <div class="nav-btn" onclick="nav('state', this)"><i class="fas fa-ghost"></i> State (Was/Were)</div>
-        <div class="nav-btn" onclick="nav('action', this)"><i class="fas fa-running"></i> Action (Regulars)</div>
+    <div class="nav-group">
+        <div class="nav-label">Mechanics</div>
+        <button class="nav-btn" onclick="nav('spelling', this)"><i class="fas fa-pen-fancy"></i> Spelling Rules</button>
+        <button class="nav-btn" onclick="nav('phonics', this)"><i class="fas fa-volume-up"></i> The -ED Sounds</button>
+        <button class="nav-btn" onclick="nav('negative', this)"><i class="fas fa-ban"></i> The "Did" Trap</button>
+        <button class="nav-btn" onclick="nav('time', this)"><i class="fas fa-clock"></i> Time Machine</button>
     </div>
-
-    <div class="nav-section">
-        <div class="nav-header">Mechanics</div>
-        <div class="nav-btn" onclick="nav('spelling', this)"><i class="fas fa-pen-fancy"></i> Spelling Rules</div>
-        <div class="nav-btn" onclick="nav('phonics', this)"><i class="fas fa-volume-up"></i> The -ED Sounds</div>
-        <div class="nav-btn" onclick="nav('time', this)"><i class="fas fa-clock"></i> Time Machine</div>
-        <div class="nav-btn" onclick="nav('negative', this)"><i class="fas fa-ban"></i> The Did Trap</div>
+    <div class="nav-group">
+        <div class="nav-label">Practice</div>
+        <button class="nav-btn" onclick="nav('workshop', this)"><i class="fas fa-hammer"></i> Structure Builder</button>
+        <button class="nav-btn" onclick="nav('dictation', this)"><i class="fas fa-microphone-alt"></i> Dictation Mode</button>
+        <button class="nav-btn" onclick="nav('quiz', this)"><i class="fas fa-trophy"></i> Certification</button>
     </div>
-
-    <div class="nav-section">
-        <div class="nav-header">Practice</div>
-        <div class="nav-btn" onclick="nav('workshop', this)"><i class="fas fa-hammer"></i> Structure Builder</div>
-        <div class="nav-btn" onclick="nav('dictation', this)"><i class="fas fa-microphone"></i> Dictation Mode</div>
-        <div class="nav-btn" onclick="nav('quiz', this)"><i class="fas fa-trophy"></i> Certification</div>
-    </div>
-
-    <div class="nav-btn" onclick="toggleTheme()" style="margin-top:2rem; justify-content:center; background:var(--surface-2);">
-        <i class="fas fa-moon"></i> Switch Theme
+    
+    <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--border-line);">
+        <button class="nav-btn" onclick="toggleTheme()" style="justify-content:center; background:var(--bg-element);">
+            <i class="fas fa-moon"></i> Switch Theme
+        </button>
     </div>
 </nav>
 
-<div class="main-container">
+<main class="content-wrapper">
 
     <section id="sec-intro" class="lab-section active">
-        <div class="content-card">
-            <span class="tag-badge badge-purple">Module 01</span>
+        <div class="card">
+            <span class="badge badge-was">Unit 01</span>
             <h1>The Dual <span>Core</span> System</h1>
-            <p>Para dominar el Pasado Simple, debes entender que existen dos carriles paralelos que <b>NUNCA</b> se cruzan. O estás describiendo un estado, o estás describiendo una acción.</p>
+            <p>Para dominar el Pasado Simple, debes separar tu cerebro en dos carriles que <b>NUNCA</b> se cruzan. Es como el aceite y el agua.</p>
             
-            <div class="core-selector">
-                <div class="core-option opt-was" onclick="nav('state')">
-                    <i class="fas fa-ghost" style="font-size:2.5rem; color:var(--was-color); margin-bottom:15px;"></i>
-                    <h3>The State</h3>
+            <div class="core-grid">
+                <div class="core-card was" onclick="nav('state')">
+                    <i class="fas fa-ghost core-icon" style="color:var(--was-color);"></i>
+                    <h3 style="color:var(--was-color);">The State</h3>
                     <p><b>Was / Were</b></p>
-                    <p style="font-size:0.9rem; opacity:0.8;">Existencia, ubicación, descripción. Sin movimiento físico.</p>
+                    <small>Ser o Estar. Descripción, ubicación, emociones. Sin movimiento físico.</small>
                 </div>
-                
-                <div class="core-option opt-did" onclick="nav('action')">
-                    <i class="fas fa-running" style="font-size:2.5rem; color:var(--did-color); margin-bottom:15px;"></i>
-                    <h3>The Action</h3>
+                <div class="core-card did" onclick="nav('action')">
+                    <i class="fas fa-running core-icon" style="color:var(--did-color);"></i>
+                    <h3 style="color:var(--did-color);">The Action</h3>
                     <p><b>Verbs + ED / Did</b></p>
-                    <p style="font-size:0.9rem; opacity:0.8;">Eventos concretos que empezaron y terminaron.</p>
+                    <small>Acciones concretas. Eventos que empezaron y terminaron.</small>
                 </div>
             </div>
 
-            <div style="background:var(--surface-2); padding:20px; border-radius:16px; border-left:4px solid var(--alert); margin-top:2rem;">
-                <h4 style="color:var(--alert); margin-bottom:5px;">Fatal Error Warning</h4>
-                <p style="margin:0; font-size:0.95rem;">Nunca mezcles los carriles. <br>Incorrecto: <i>"Did you were happy?"</i> <br>Correcto: <i>"Were you happy?"</i></p>
+            <div style="background:var(--danger-bg); border-left:4px solid var(--danger); padding:20px; border-radius:12px; margin-top:2rem;">
+                <h4 style="color:var(--danger); margin-bottom:5px;">Fatal Error Warning</h4>
+                <p style="margin:0; font-size:0.95rem; color:var(--text-primary);">Nunca mezcles los carriles. <br>❌ <i>"Did you were happy?"</i> <br>✅ <i>"Were you happy?"</i></p>
             </div>
 
-            <button class="btn-xl" onclick="nav('state')">Comenzar el Protocolo <i class="fas fa-arrow-right"></i></button>
+            <button class="btn-xl" onclick="nav('state')">Entrar al Carril de Estado <i class="fas fa-arrow-right"></i></button>
         </div>
     </section>
 
     <section id="sec-state" class="lab-section">
-        <div class="content-card" style="border-top:5px solid var(--was-color);">
-            <span class="tag-badge badge-purple">Core A</span>
-            <h1>The State: <span style="color:var(--was-color);">Was / Were</span></h1>
-            <p>Aquí NO usamos auxiliares. El verbo To Be es el rey y se manda solo. Se usa para descripciones y ubicaciones en el pasado.</p>
+        <div class="card" style="border-top:5px solid var(--was-color);">
+            <span class="badge badge-was">Core A</span>
+            <h2>The State: <span style="color:var(--was-color);">Was / Were</span></h2>
+            <p>El pasado del verbo To Be. Aquí NO usamos auxiliares. El verbo se manda solo.</p>
 
-            <h3>Affirmative Formula</h3>
-            <div class="formula-box">
+            <h3>Affirmative</h3>
+            <div class="formula-row">
                 <div class="block">Subject</div> <i class="fas fa-plus"></i>
                 <div class="block hl-was">WAS / WERE</div> <i class="fas fa-plus"></i>
                 <div class="block">Adjective / Place</div>
             </div>
 
-            <table class="data-table">
-                <tr><th>Audio</th><th>Example</th><th>Context</th></tr>
-                <tr>
-                    <td><button class="btn-audio" onclick="speak('I was tired yesterday')"><i class="fas fa-volume-up"></i></button></td>
-                    <td>I <b>was</b> tired.</td>
-                    <td>Feeling (Estado)</td>
-                </tr>
-                <tr>
-                    <td><button class="btn-audio" onclick="speak('They were at the park')"><i class="fas fa-volume-up"></i></button></td>
-                    <td>They <b>were</b> at the park.</td>
-                    <td>Location (Ubicación)</td>
-                </tr>
-            </table>
+            <div class="table-container">
+                <table class="data-table">
+                    <tr><th>Listen</th><th>Sentence</th><th>Context</th></tr>
+                    <tr>
+                        <td><button class="audio-btn" onclick="speak('I was tired yesterday')"><i class="fas fa-volume-up"></i></button></td>
+                        <td class="mono">I <b>was</b> tired.</td>
+                        <td>Feeling</td>
+                    </tr>
+                    <tr>
+                        <td><button class="audio-btn" onclick="speak('They were at the park')"><i class="fas fa-volume-up"></i></button></td>
+                        <td class="mono">They <b>were</b> at the park.</td>
+                        <td>Location</td>
+                    </tr>
+                </table>
+            </div>
 
             <h3 style="margin-top:2.5rem;">Questions (The Swap)</h3>
-            <p>Simplemente intercambia el orden. El verbo va antes que el sujeto.</p>
-            <div class="formula-box" style="border:2px solid var(--was-color);">
+            <div class="formula-row" style="border:2px solid var(--was-color);">
                 <div class="block hl-was">WAS / WERE</div> <i class="fas fa-arrow-right"></i>
                 <div class="block">Subject</div> <i class="fas fa-plus"></i>
                 <div class="block">Complement?</div>
             </div>
 
-            <button class="btn-xl" style="background:var(--did-color);" onclick="nav('action')">Cambiar a Carril de Acción <i class="fas fa-running"></i></button>
+            <button class="btn-xl" style="background:var(--did-color);" onclick="nav('action')">Ir a Verbos de Acción <i class="fas fa-running"></i></button>
         </div>
     </section>
 
     <section id="sec-action" class="lab-section">
-        <div class="content-card" style="border-top:5px solid var(--did-color);">
-            <span class="tag-badge badge-green">Core B</span>
-            <h1>The Action: <span style="color:var(--did-color);">Regular Verbs</span></h1>
-            <p>Para narrar historias y eventos, usamos verbos de acción. Si el verbo es regular, la regla de oro es agregar <b>-ED</b>.</p>
+        <div class="card" style="border-top:5px solid var(--did-color);">
+            <span class="badge badge-did">Core B</span>
+            <h2>The Action: <span style="color:var(--did-color);">Regular Verbs</span></h2>
+            <p>Para narrar historias, usamos verbos de acción. Si el verbo es regular, la regla es agregar <b>-ED</b>.</p>
 
-            <div class="formula-box">
+            <div class="formula-row">
                 <div class="block">Subject</div> <i class="fas fa-plus"></i>
                 <div class="block hl-did">Verb + ED</div> <i class="fas fa-plus"></i>
-                <div class="block">Complement</div>
+                <div class="block">Object</div>
             </div>
 
-            <div class="phonics-grid">
-                <div class="sound-card" onclick="speak('She worked late last night.')">
-                    <h3>Work &rarr; Worked</h3>
-                    <p style="font-size:0.9rem; color:var(--text-muted);">Standard Rule</p>
+            <div class="sound-grid">
+                <div class="sound-box" onclick="speak('I worked late.')">
+                    <h4>Work &rarr; Worked</h4>
+                    <small>Standard Rule (+ed)</small>
                 </div>
-                <div class="sound-card" onclick="speak('We lived in Mexico.')">
-                    <h3>Live &rarr; Lived</h3>
-                    <p style="font-size:0.9rem; color:var(--text-muted);">Ends in E (+d)</p>
+                <div class="sound-box" onclick="speak('She lived here.')">
+                    <h4>Live &rarr; Lived</h4>
+                    <small>Ends in E (+d)</small>
                 </div>
-                <div class="sound-card" onclick="speak('He studied math.')">
-                    <h3>Study &rarr; Studied</h3>
-                    <p style="font-size:0.9rem; color:var(--text-muted);">Y becomes I (+ed)</p>
+                <div class="sound-box" onclick="speak('We studied math.')">
+                    <h4>Study &rarr; Studied</h4>
+                    <small>Y becomes I (+ed)</small>
                 </div>
             </div>
 
-            <button class="btn-xl" style="background:var(--text-main);" onclick="nav('spelling')">Ver Reglas de Ortografía <i class="fas fa-pen"></i></button>
+            <button class="btn-xl btn-secondary" onclick="nav('spelling')">Ver Reglas de Ortografía <i class="fas fa-pen"></i></button>
         </div>
     </section>
 
     <section id="sec-spelling" class="lab-section">
-        <div class="content-card">
-            <h1>Spelling <span style="color:var(--text-muted);">Rules</span></h1>
-            <p>No siempre es solo poner "-ed". Aquí están las dos excepciones críticas para escribir correctamente.</p>
+        <div class="card">
+            <h2>Spelling <span style="color:var(--text-secondary);">Mechanics</span></h2>
+            <p>No siempre es solo poner "-ed". Aprende las excepciones.</p>
 
-            <div class="core-selector">
-                <div class="core-option" style="border-color:var(--border);">
-                    <div style="font-family:'JetBrains Mono'; font-size:2rem; font-weight:800; color:var(--text-main);">Y &rarr; IED</div>
+            <div class="core-grid">
+                <div class="core-card">
+                    <span class="mono" style="font-size:2rem; font-weight:800; color:var(--text-primary);">Y &rarr; IED</span>
                     <p style="margin-top:10px;">Si termina en Consonante + Y, elimina la Y.</p>
-                    <hr style="border:0; border-top:1px dashed var(--border); margin:15px 0;">
-                    <p class="mono">Cry &rarr; Cr<b style="color:var(--did-color);">ied</b></p>
-                    <p class="mono">Try &rarr; Tr<b style="color:var(--did-color);">ied</b></p>
+                    <p class="mono" style="margin-top:15px; color:var(--did-color);">Try &rarr; Tr<b>ied</b></p>
                 </div>
-                <div class="core-option" style="border-color:var(--border);">
-                    <div style="font-family:'JetBrains Mono'; font-size:2rem; font-weight:800; color:var(--text-main);">Double</div>
+                <div class="core-card">
+                    <span class="mono" style="font-size:2rem; font-weight:800; color:var(--text-primary);">Double</span>
                     <p style="margin-top:10px;">Verbos cortos (CVC) duplican la última letra.</p>
-                    <hr style="border:0; border-top:1px dashed var(--border); margin:15px 0;">
-                    <p class="mono">Stop &rarr; Stop<b style="color:var(--did-color);">ped</b></p>
-                    <p class="mono">Plan &rarr; Plan<b style="color:var(--did-color);">ned</b></p>
+                    <p class="mono" style="margin-top:15px; color:var(--did-color);">Stop &rarr; Stop<b>ped</b></p>
                 </div>
             </div>
             
-            <button class="btn-xl" onclick="nav('phonics')">¿Cómo se pronuncian? <i class="fas fa-headphones"></i></button>
+            <button class="btn-xl" onclick="nav('phonics')">¿Cómo suenan? (Phonics) <i class="fas fa-headphones"></i></button>
         </div>
     </section>
 
     <section id="sec-phonics" class="lab-section">
-        <div class="content-card">
-            <h1>The -ED <span style="color:var(--did-color);">Sounds</span></h1>
-            <p>La terminación -ED tiene 3 sonidos diferentes. No todo suena como "ed". Haz clic para escuchar la diferencia real.</p>
+        <div class="card">
+            <h2>The -ED <span style="color:var(--did-color);">Nightmare</span></h2>
+            <p>La terminación -ED tiene 3 personalidades. Haz clic para escuchar la diferencia real.</p>
 
-            <div class="phonics-grid">
-                <div class="sound-card" onclick="speak('Worked. Kissed. Washed.')">
-                    <span class="ipa-symbol">/t/</span>
-                    <h4>Sonido Seco (T)</h4>
-                    <p style="font-size:0.85rem;">Para verbos con sonido final de aire (K, P, S, SH, F).</p>
-                    <div style="margin-top:10px; font-weight:700;">Work-t • Kiss-t</div>
+            <div class="sound-grid">
+                <div class="sound-box" onclick="speak('Worked. Washed.')">
+                    <span class="ipa">/t/</span>
+                    <h4>Sonido Seco</h4>
+                    <small>Para verbos sordos (K, P, S, SH).</small>
+                    <div class="mono" style="margin-top:10px;">Work-t</div>
                 </div>
-                <div class="sound-card" onclick="speak('Played. Called. Lived.')">
-                    <span class="ipa-symbol">/d/</span>
-                    <h4>Vibrante (D)</h4>
-                    <p style="font-size:0.85rem;">Para verbos que vibran (L, N, R, V, Vocales).</p>
-                    <div style="margin-top:10px; font-weight:700;">Play-d • Call-d</div>
+                <div class="sound-box" onclick="speak('Played. Called.')">
+                    <span class="ipa">/d/</span>
+                    <h4>Vibrante</h4>
+                    <small>Para verbos sonoros (L, N, R, Vocales).</small>
+                    <div class="mono" style="margin-top:10px;">Play-d</div>
                 </div>
-                <div class="sound-card" style="background:var(--did-bg); border-color:var(--did-color);" onclick="speak('Wanted. Needed. Decided.')">
-                    <span class="ipa-symbol">/ɪd/</span>
-                    <h4>Sílaba Extra (ID)</h4>
-                    <p style="font-size:0.85rem;"><b>SOLO</b> si el verbo termina en T o D.</p>
-                    <div style="margin-top:10px; font-weight:700;">Want-ed • Need-ed</div>
+                <div class="sound-box" style="border-color:var(--brand); background:var(--was-bg);" onclick="speak('Wanted. Needed.')">
+                    <span class="ipa">/ɪd/</span>
+                    <h4>Sílaba Extra</h4>
+                    <small>SOLO si termina en T o D.</small>
+                    <div class="mono" style="margin-top:10px;">Want-ed</div>
                 </div>
             </div>
             
-            <button class="btn-xl" style="background:var(--time-color);" onclick="nav('time')">Siguiente: Time Machine <i class="fas fa-clock"></i></button>
-        </div>
-    </section>
-
-    <section id="sec-time" class="lab-section">
-        <div class="content-card">
-            <h1>Time <span style="color:var(--time-color);">Machine</span></h1>
-            <p>El Pasado Simple requiere anclas temporales. Sin ellas, la frase queda flotando.</p>
-            
-            <table class="data-table">
-                <tr><th>Expression</th><th>Meaning</th><th>Example</th></tr>
-                <tr>
-                    <td style="font-weight:700; color:var(--time-color);">Yesterday</td>
-                    <td>Ayer</td>
-                    <td>Yesterday morning</td>
-                </tr>
-                <tr>
-                    <td style="font-weight:700; color:var(--time-color);">Last...</td>
-                    <td>El pasado (Semana, mes)</td>
-                    <td>Last night, Last year</td>
-                </tr>
-                <tr>
-                    <td style="font-weight:700; color:var(--time-color);">...Ago</td>
-                    <td>Hace (tiempo)</td>
-                    <td>2 days ago, 10 mins ago</td>
-                </tr>
-            </table>
-            
-            <button class="btn-xl" style="background:var(--alert);" onclick="nav('negative')">Alerta Roja: The Did Trap <i class="fas fa-exclamation-circle"></i></button>
+            <button class="btn-xl" style="background:var(--danger);" onclick="nav('negative')">Cuidado: The Did Trap <i class="fas fa-exclamation-triangle"></i></button>
         </div>
     </section>
 
     <section id="sec-negative" class="lab-section">
-        <div class="content-card" style="border-top:5px solid var(--alert);">
-            <h1 style="color:var(--alert);">The "Did" Trap</h1>
+        <div class="card" style="border-top:5px solid var(--danger);">
+            <h2 style="color:var(--danger);">The "Did" Trap</h2>
             <p>Aquí falla el 90% de los estudiantes. En oraciones negativas y preguntas, aparece el auxiliar <b>DID</b>.</p>
             
-            <div style="background:#fee2e2; padding:25px; border-radius:16px; color:#991b1b; display:flex; gap:20px; align-items:center; margin-bottom:2rem;">
-                <i class="fas fa-radiation" style="font-size:3rem;"></i>
-                <div>
-                    <h3 style="margin:0; font-size:1.3rem;">Toxicidad Gramatical</h3>
-                    <p style="margin:5px 0 0;">Si usas <b>Did</b> o <b>Didn't</b>, el verbo principal pierde su poder. Debe regresar a su <b>FORMA BASE</b> (Sin -ed).</p>
-                </div>
+            <div style="background:var(--danger-bg); padding:25px; border-radius:16px; margin-bottom:2rem; border-left:4px solid var(--danger);">
+                <h4 style="color:var(--danger);">Regla de Toxicidad</h4>
+                <p style="margin-top:5px;">El auxiliar <b>Did / Didn't</b> es celoso. Si él está en la oración, le "roba" el pasado al verbo. El verbo debe regresar a su <b>FORMA BASE</b>.</p>
             </div>
 
-            <h3>Negative Structure</h3>
-            <div class="formula-box">
+            <h3>Negative</h3>
+            <div class="formula-row">
                 <div class="block">Subject</div> <i class="fas fa-plus"></i>
-                <div class="block hl-warn">DIDN'T</div> <i class="fas fa-plus"></i>
+                <div class="block hl-alert">DIDN'T</div> <i class="fas fa-plus"></i>
                 <div class="block">Base Verb</div>
             </div>
-            <p class="mono" style="text-align:center; font-size:1.1rem;">She <b style="color:var(--alert);">didn't</b> <u style="text-decoration-style:wavy;">work</u> yesterday.</p>
+            <p class="mono" style="text-align:center;">She <b style="color:var(--danger);">didn't</b> work. (NO worked)</p>
 
-            <h3 style="margin-top:2rem;">Question Structure</h3>
-            <div class="formula-box">
-                <div class="block hl-warn">DID</div> <i class="fas fa-plus"></i>
+            <h3>Question</h3>
+            <div class="formula-row">
+                <div class="block hl-alert">DID</div> <i class="fas fa-plus"></i>
                 <div class="block">Subject</div> <i class="fas fa-plus"></i>
                 <div class="block">Base Verb</div> <div class="block">?</div>
             </div>
-            <p class="mono" style="text-align:center; font-size:1.1rem;"><b style="color:var(--alert);">Did</b> you <u style="text-decoration-style:wavy;">call</u> him?</p>
+            <p class="mono" style="text-align:center;"><b style="color:var(--danger);">Did</b> you call? (NO called)</p>
 
-            <button class="btn-xl" style="background:var(--text-main);" onclick="nav('workshop')">Practicar Estructuras <i class="fas fa-tools"></i></button>
+            <button class="btn-xl" onclick="nav('workshop')">Practicar Estructuras <i class="fas fa-hammer"></i></button>
+        </div>
+    </section>
+
+    <section id="sec-time" class="lab-section">
+        <div class="card">
+            <h2>Time <span style="color:var(--time-color);">Machine</span></h2>
+            <p>El Pasado Simple requiere anclas temporales específicas.</p>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <tr><th>Anchor</th><th>Meaning</th><th>Use Case</th></tr>
+                    <tr><td class="mono" style="color:var(--time-color);">Yesterday</td><td>Ayer</td><td>Yesterday morning / afternoon</td></tr>
+                    <tr><td class="mono" style="color:var(--time-color);">Last...</td><td>El pasado</td><td>Last night, Last week, Last year</td></tr>
+                    <tr><td class="mono" style="color:var(--time-color);">...Ago</td><td>Hace</td><td>2 days ago, 10 mins ago</td></tr>
+                </table>
+            </div>
         </div>
     </section>
 
     <section id="sec-workshop" class="lab-section">
-        <div class="content-card">
-            <h1>Structure Builder</h1>
-            <p>Arrastra las palabras para formar la oración correcta. Cuidado con el orden.</p>
+        <div class="card">
+            <h2>Structure Workshop</h2>
+            <p>Arrastra las palabras para formar la oración correcta.</p>
             
-            <div class="workshop-stage">
-                <h3 id="targetSentence" style="color:var(--text-muted); margin-bottom:20px;">Cargando...</h3>
-                
-                <div class="slot-container" id="dropArea"></div>
-                <div class="chip-bank" id="chipBank"></div>
-                
-                <div id="wsFeedback" style="display:none; padding:15px; margin-top:20px; border-radius:10px; font-weight:700;"></div>
+            <div style="text-align:center; margin:2rem 0;">
+                <h3 id="targetSentence" style="color:var(--text-secondary);">Cargando...</h3>
             </div>
 
-            <button class="btn-xl" onclick="checkWorkshop()">Verificar Construcción</button>
-            <button class="btn-xl" style="background:transparent; color:var(--text-muted); border:2px solid var(--border); box-shadow:none;" onclick="resetWorkshop()">Reiniciar</button>
+            <div class="workshop-zone" id="dropArea"></div>
+            <div class="chip-bank" id="chipBank"></div>
+            
+            <div class="feedback" id="wsFeedback"></div>
+
+            <button class="btn-xl" onclick="checkWorkshop()">Verificar</button>
+            <button class="btn-xl btn-secondary" onclick="initWorkshop()">Siguiente / Reiniciar</button>
         </div>
     </section>
 
     <section id="sec-dictation" class="lab-section">
-        <div class="content-card">
-            <h1>Dictation Mode</h1>
-            <p>Escucha y escribe. Pon a prueba tu oído y tu ortografía.</p>
+        <div class="card">
+            <h2>Dictation Challenge</h2>
+            <p>Escucha y escribe. Cuida tu ortografía.</p>
             
-            <div style="background:var(--surface-2); padding:3rem 2rem; border-radius:24px; text-align:center;">
-                <button class="btn-audio" style="width:70px; height:70px; font-size:1.8rem; margin-bottom:2rem; background:var(--brand); color:white; border:none;" onclick="playDictation()"><i class="fas fa-play"></i></button>
-                <p style="font-size:0.9rem; color:var(--text-muted);">Pulsa para escuchar (3 intentos máx)</p>
+            <div style="background:var(--bg-element); padding:3rem 2rem; border-radius:24px; text-align:center; margin-top:2rem;">
+                <button class="audio-btn" style="width:70px; height:70px; font-size:1.8rem; margin-bottom:2rem; background:var(--brand); color:#ffffff; border:none;" onclick="playDictation()"><i class="fas fa-play"></i></button>
+                <p style="font-size:0.9rem; color:var(--text-secondary);">Pulsa para escuchar (3 intentos)</p>
                 
-                <input type="text" class="input-dict" id="dictInput" placeholder="Escribe lo que escuchas..." autocomplete="off">
+                <input type="text" id="dictInput" placeholder="Escribe aquí..." autocomplete="off">
             </div>
             
-            <div id="dictFeedback" style="display:none; padding:15px; margin-top:20px; border-radius:10px; text-align:center; font-weight:700;"></div>
-
+            <div class="feedback" id="dictFeedback"></div>
             <button class="btn-xl" onclick="checkDictation()">Comprobar</button>
         </div>
     </section>
 
     <section id="sec-quiz" class="lab-section">
-        <div class="content-card">
-            <h1>Final Certification</h1>
-            <p>10 Preguntas de fuego rápido. Sin ayudas.</p>
+        <div class="card">
+            <h2>Final Certification</h2>
+            <p>Demuestra tu dominio. 10 preguntas.</p>
             
             <div id="quiz-ui">
-                <div class="progress-track" style="margin:20px 0; width:100%; display:block;"><div class="progress-fill" id="quizProgress" style="width:0%;"></div></div>
-                <div id="questionBox" style="font-size:1.3rem; font-weight:700; margin-bottom:2rem; text-align:center;"></div>
+                <div style="margin:20px 0; height:6px; background:var(--bg-element); border-radius:10px;"><div id="quizProgress" style="height:100%; width:0%; background:var(--brand); transition:0.3s;"></div></div>
+                <div id="questionBox" style="font-size:1.4rem; font-weight:700; margin-bottom:2rem; text-align:center; color:var(--text-primary);"></div>
                 <div id="optionsBox"></div>
             </div>
 
             <div id="quiz-results" style="display:none; text-align:center; padding:2rem;">
-                <img src="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w256" style="width:120px; border-radius:15px; box-shadow:var(--shadow-float); margin-bottom:20px;">
+                <img src="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w256" style="width:120px; border-radius:15px; margin-bottom:20px;">
                 <h2 style="color:var(--success);">Protocolo Completado</h2>
-                <p id="finalScore" style="font-size:1.5rem; font-weight:800; color:var(--text-main);"></p>
+                <p id="finalScore" style="font-size:2rem; font-weight:800; color:var(--text-primary); margin:1rem 0;"></p>
                 <button class="btn-xl" onclick="location.reload()">Reiniciar Sistema</button>
             </div>
         </div>
     </section>
 
-</div>
+</main>
 
-<footer class="info-ribbon">
-    <div class="ribbon-grid">
-        <div class="ribbon-col">
+<footer class="footer-ribbon">
+    <div class="footer-grid">
+        <div class="footer-col">
             <h5>Rators Club</h5>
-            <p>Plataforma de ingeniería lingüística diseñada para el aprendizaje acelerado y significativo del idioma inglés.</p>
+            <p>Ingeniería lingüística para el aprendizaje acelerado.</p>
         </div>
-        <div class="ribbon-col">
+        <div class="footer-col">
             <h5>Creator</h5>
             <p><b>Teacher Netza Varo</b><br>Tepic, Nayarit, México.<br>Est. 2026</p>
         </div>
-        <div class="ribbon-col">
-            <h5>Resources</h5>
-            <p>
-                <a href="#">Grammar Database</a><br>
-                <a href="#">TOEFL Prep</a><br>
-                <a href="#">Student Portal</a>
-            </p>
+        <div class="footer-col">
+            <h5>Legal</h5>
+            <p>Platform v2.5<br>Titan Edition</p>
         </div>
     </div>
-    <div class="legal-line">
-        RATORS CLUB LABS | LICENSED UNDER GNU GPL V3.0 | BUILT WITH <i class="fas fa-heart" style="color:var(--alert);"></i> IN MEXICO
+    <div class="legal">
+        RATORS CLUB LABS | LICENSED UNDER GNU GPL V3.0 | BUILT WITH <i class="fas fa-code" style="color:var(--brand);"></i>
     </div>
 </footer>
 
 <script>
     /* ========================================
-       TITAN ENGINE: JS LOGIC
+       TITAN ENGINE: ROBUST JS (AUDIO FIX & LOGIC)
        ======================================== */
     
-    // --- UTILS ---
+    // --- 1. ROBUST AUDIO ENGINE (The Patch) ---
     const synth = window.speechSynthesis;
-    
+    let availableVoices = [];
+    let preferredVoice = null;
+
+    // Load voices robustly (needed for Mobile/Safari)
+    function initVoices() {
+        availableVoices = synth.getVoices();
+        // Priority: Google US -> Apple Samantha -> Any English
+        preferredVoice = availableVoices.find(v => v.name.includes("Google US")) 
+                      || availableVoices.find(v => v.lang === "en-US") 
+                      || availableVoices.find(v => v.lang.startsWith("en"));
+    }
+
+    // Event listener for async voice loading
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = initVoices;
+    }
+
     function speak(text) {
-        if (synth.speaking) synth.cancel();
+        if (synth.speaking) synth.cancel(); // Prevent queue
+        if (availableVoices.length === 0) initVoices();
+
         const utter = new SpeechSynthesisUtterance(text);
+        if (preferredVoice) utter.voice = preferredVoice;
+        
         utter.lang = 'en-US';
-        utter.rate = 0.85; // Slightly slower for clarity
+        utter.rate = 0.85; // Optimal teaching speed
+        utter.pitch = 1;
+        
         synth.speak(utter);
     }
-    
-    function unlockAudio() { speak(''); }
 
+    function unlockAudio() {
+        if (synth.paused) synth.resume();
+        initVoices();
+    }
+
+    function initSystem() {
+        initVoices(); // Try load immediately
+        renderVerbs(); // If we had the verb matrix
+        
+        // Check local storage for theme
+        if(localStorage.getItem('rators-theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    }
+
+    // --- 2. INTERFACE LOGIC ---
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('open');
     }
 
     function toggleTheme() {
         document.body.classList.toggle('dark-mode');
+        localStorage.setItem('rators-theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
     }
 
     function nav(id, btn) {
@@ -645,296 +672,29 @@
         document.querySelectorAll('.lab-section').forEach(s => s.classList.remove('active'));
         document.getElementById('sec-' + id).classList.add('active');
         
-        // Update Sidebar UI
+        // Update Sidebar
         if(btn) {
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            if(window.innerWidth <= 900) toggleSidebar(); // Auto-close on mobile
+            if(window.innerWidth <= 1024) toggleSidebar(); // Close on mobile
         }
         
-        // Scroll Top
-        window.scrollTo(0,0);
-
-        // Update Header Progress Bar (Visual only)
-        const sections = ['intro', 'state', 'action', 'spelling', 'phonics', 'time', 'negative', 'workshop', 'dictation', 'quiz'];
-        const idx = sections.indexOf(id);
-        const pct = ((idx + 1) / sections.length) * 100;
-        document.getElementById('progressBar').style.width = `${pct}%`;
-
-        // Initialize Dynamic Modules
-        if(id === 'workshop') initWorkshop();
-        if(id === 'dictation') initDictation();
-        if(id === 'quiz') initQuiz();
-    }
-
-    // --- WORKSHOP LOGIC (Drag & Drop) ---
-    const wsLevels = [
-        { es: "Ella no trabajó ayer.", words: ["She", "didn't", "work", "yesterday", "."], correct: "She didn't work yesterday ." },
-        { es: "¿Estuviste feliz?", words: ["Were", "you", "happy", "?"], correct: "Were you happy ?" },
-        { es: "Yo viví en México.", words: ["I", "lived", "in", "Mexico", "."], correct: "I lived in Mexico ." },
-        { es: "¿Qué comiste?", words: ["What", "did", "you", "eat", "?"], correct: "What did you eat ?" },
-        { es: "Nosotros no estábamos en casa.", words: ["We", "weren't", "at", "home", "."], correct: "We weren't at home ." },
-        { es: "Ellos jugaron fútbol.", words: ["They", "played", "soccer", "."], correct: "They played soccer ." },
-        { es: "¿Ella llamó?", words: ["Did", "she", "call", "?"], correct: "Did she call ?" }
-    ];
-    let wsIndex = 0;
-
-    function initWorkshop() {
-        const data = wsLevels[wsIndex];
-        document.getElementById('targetSentence').innerText = data.es;
-        const bank = document.getElementById('chipBank');
-        const drop = document.getElementById('dropArea');
-        const fb = document.getElementById('wsFeedback');
-        
-        bank.innerHTML = ''; drop.innerHTML = ''; fb.style.display = 'none';
-
-        // Shuffle Words
-        let chips = [...data.words].sort(() => Math.random() - 0.5);
-
-        chips.forEach(word => {
-            const chip = document.createElement('div');
-            chip.className = 'word-chip';
-            chip.innerText = word;
-            chip.onclick = () => {
-                if(chip.parentElement === bank) {
-                    drop.appendChild(chip);
-                    speak(word);
-                } else {
-                    bank.appendChild(chip);
-                }
-            };
-            bank.appendChild(chip);
-        });
-    }
-
-    function checkWorkshop() {
-        const attempt = Array.from(document.getElementById('dropArea').children).map(c => c.innerText).join(' ');
-        const correct = wsLevels[wsIndex].correct;
-        const fb = document.getElementById('wsFeedback');
-        
-        fb.style.display = 'block';
-        if(attempt === correct) {
-            fb.style.background = '#dcfce7'; fb.style.color = '#14532d';
-            fb.innerHTML = '<i class="fas fa-check-circle"></i> Correct! Next sentence...';
-            confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-            setTimeout(() => {
-                wsIndex = (wsIndex + 1) % wsLevels.length;
-                initWorkshop();
-            }, 2000);
-        } else {
-            fb.style.background = '#fee2e2'; fb.style.color = '#7f1d1d';
-            fb.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect. Check word order.';
-            speak("Try again");
-        }
-    }
-    
-    function resetWorkshop() { initWorkshop(); }
-
-    // --- DICTATION LOGIC ---
-    const dictationSentences = [
-        "She cooked dinner last night",
-        "They didn't play soccer",
-        "Where did you buy that?",
-        "I was very tired yesterday",
-        "He stopped the car",
-        "Did you watch the movie?",
-        "We lived in Paris for two years"
-    ];
-    let dicIndex = 0;
-
-    function initDictation() {
-        document.getElementById('dictInput').value = '';
-        document.getElementById('dictFeedback').style.display = 'none';
-    }
-
-    function playDictation() {
-        speak(dictationSentences[dicIndex]);
-    }
-
-    function checkDictation() {
-        const val = document.getElementById('dictInput').value.trim();
-        const target = dictationSentences[dicIndex];
-        const fb = document.getElementById('dictFeedback');
-        
-        fb.style.display = 'block';
-        
-        // Normalize for check (ignore punctuation case sensitivity)
-        const cleanVal = val.replace(/[.,?]/g, '').toLowerCase();
-        const cleanTarget = target.replace(/[.,?]/g, '').toLowerCase();
-
-        if(cleanVal === cleanTarget) {
-            fb.style.background = '#dcfce7'; fb.style.color = '#14532d';
-            fb.innerHTML = `<b>Perfect!</b> "${target}"`;
-            confetti({ particleCount: 50, spread: 50 });
-            setTimeout(() => {
-                dicIndex = (dicIndex + 1) % dictationSentences.length;
-                initDictation();
-            }, 2500);
-        } else {
-            fb.style.background = '#fee2e2'; fb.style.color = '#7f1d1d';
-            fb.innerHTML = `<b>Not quite.</b> Listen closely.`;
-        }
-    }
-
-    // --- QUIZ LOGIC ---
-    const quizData = [
-        { q: "I ____ (watch) TV last night.", opts: ["watched", "watch", "watchd"], a: "watched" },
-        { q: "Where ____ (be) you yesterday?", opts: ["did", "was", "were"], a: "were" },
-        { q: "She ____ (not/go) to the party.", opts: ["didn't went", "didn't go", "no went"], a: "didn't go" },
-        { q: "____ (do) you like the movie?", opts: ["Did", "Were", "Was"], a: "Did" },
-        { q: "They ____ (stop) at the red light.", opts: ["stoped", "stopped", "stop"], a: "stopped" },
-        { q: "We ____ (study) for the exam.", opts: ["studyed", "studied", "studid"], a: "studied" },
-        { q: "He ____ (be) very hungry.", opts: ["were", "did", "was"], a: "was" },
-        { q: "What did you ____ (eat)?", opts: ["ate", "eat", "eated"], a: "eat" },
-        { q: "I ____ (try) to call you.", opts: ["tryed", "tried", "triyed"], a: "tried" },
-        { q: "It ____ (not/rain) yesterday.", opts: ["didn't rain", "didn't rained", "wasn't rain"], a: "didn't rain" }
-    ];
-    let qIndex = 0;
-    let score = 0;
-
-    function initQuiz() {
-        qIndex = 0; score = 0;
-        document.getElementById('quiz-ui').style.display = 'block';
-        document.getElementById('quiz-results').style.display = 'none';
-        renderQuestion();
-    }
-
-    function renderQuestion() {
-        if(qIndex >= quizData.length) return finishQuiz();
-        
-        const data = quizData[qIndex];
-        document.getElementById('questionBox').innerText = `${qIndex+1}. ${data.q}`;
-        
-        const optsBox = document.getElementById('optionsBox');
-        optsBox.innerHTML = '';
-        
-        data.opts.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = 'btn-xl';
-            btn.style.marginTop = '10px';
-            btn.style.background = 'var(--surface)';
-            btn.style.color = 'var(--text-main)';
-            btn.style.border = '1px solid var(--border)';
-            btn.innerText = opt;
-            btn.onclick = () => handleAnswer(opt, data.a);
-            optsBox.appendChild(btn);
-        });
-
-        // Bar
-        const pct = (qIndex / quizData.length) * 100;
-        document.getElementById('quizProgress').style.width = `${pct}%`;
-    }
-
-    function handleAnswer(selected, correct) {
-        if(selected === correct) score++;
-        qIndex++;
-        renderQuestion();
-    }
-
-    function finishQuiz() {
-        document.getElementById('quiz-ui').style.display = 'none';
-        document.getElementById('quiz-results').style.display = 'block';
-        document.getElementById('finalScore').innerText = `Score: ${score} / 10`;
-        if(score >= 8) {
-            confetti({ particleCount: 200, spread: 100 });
-            speak("Congratulations! You passed.");
-        } else {
-            speak("Keep practicing.");
-        }
-    }
-
-    // Init
-    window.onload = () => {
-        const pref = localStorage.getItem('rators-premium-theme');
-        if(pref === 'dark') document.body.classList.add('dark-mode');
-    };
-
-<script>
-    /* ========================================
-       TITAN ENGINE: ROBUST JS (AUDIO FIX)
-       ======================================== */
-    
-    // --- AUDIO ENGINE 2.0 (ROBUST) ---
-    const synth = window.speechSynthesis;
-    let voices = [];
-    let englishVoice = null;
-
-    // 1. Cargar voces cuando estén listas (Crítico para Mobile)
-    function loadVoices() {
-        voices = synth.getVoices();
-        // Intentar encontrar una voz preferente (Google US, Apple Samantha, etc.)
-        englishVoice = voices.find(voice => voice.lang === 'en-US' && voice.name.includes('Google')) 
-                    || voices.find(voice => voice.lang === 'en-US') 
-                    || voices.find(voice => voice.lang.includes('en'));
-    }
-
-    // Algunos navegadores cargan voces asíncronamente
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-        speechSynthesis.onvoiceschanged = loadVoices;
-    }
-    loadVoices(); // Intento inicial
-
-    // 2. Función de Hablar Blindada
-    function speak(text) {
-        if (!text) return;
-        
-        // Cancelar audio anterior para evitar "cola" de espera
-        if (synth.speaking) synth.cancel();
-
-        // Asegurar que tenemos voces cargadas
-        if (voices.length === 0) loadVoices();
-
-        const utter = new SpeechSynthesisUtterance(text);
-        
-        // Asignar voz en inglés forzosa
-        if (englishVoice) {
-            utter.voice = englishVoice;
-        }
-        
-        utter.lang = 'en-US';
-        utter.rate = 0.9; // Velocidad natural
-        utter.volume = 1; 
-
-        // Manejo de errores silencioso
-        utter.onerror = function(e) { console.error('Audio error:', e); };
-
-        synth.speak(utter);
-    }
-    
-    // Desbloqueo inicial (necesario en iOS)
-    function unlockAudio() { 
-        if (synth.paused) synth.resume();
-        // No forzamos habla vacía para evitar glitches, solo reanudamos contexto
-    }
-
-    // --- INTERFACE UTILS ---
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
-    function toggleTheme() { document.body.classList.toggle('dark-mode'); }
-
-    function nav(id, btn) {
-        document.querySelectorAll('.lab-section').forEach(s => s.classList.remove('active'));
-        document.getElementById('sec-' + id).classList.add('active');
-        
-        if(btn) {
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            if(window.innerWidth <= 900) toggleSidebar();
-        }
         window.scrollTo(0,0);
 
         // Progress Bar
-        const sections = ['intro', 'state', 'action', 'spelling', 'phonics', 'time', 'negative', 'workshop', 'dictation', 'quiz'];
+        const sections = ['intro', 'state', 'action', 'spelling', 'phonics', 'negative', 'time', 'workshop', 'dictation', 'quiz'];
         const idx = sections.indexOf(id);
         const pct = ((idx + 1) / sections.length) * 100;
         document.getElementById('progressBar').style.width = `${pct}%`;
 
+        // Initialize specific modules
         if(id === 'workshop') initWorkshop();
         if(id === 'dictation') initDictation();
         if(id === 'quiz') initQuiz();
     }
 
-    // --- WORKSHOP LOGIC (Drag & Drop) ---
-    const wsLevels = [
+    // --- 3. WORKSHOP LOGIC ---
+    const wsData = [
         { es: "Ella no trabajó ayer.", words: ["She", "didn't", "work", "yesterday", "."], correct: "She didn't work yesterday ." },
         { es: "¿Estuviste feliz?", words: ["Were", "you", "happy", "?"], correct: "Were you happy ?" },
         { es: "Yo viví en México.", words: ["I", "lived", "in", "Mexico", "."], correct: "I lived in Mexico ." },
@@ -946,7 +706,7 @@
     let wsIndex = 0;
 
     function initWorkshop() {
-        const data = wsLevels[wsIndex];
+        const data = wsData[wsIndex];
         document.getElementById('targetSentence').innerText = data.es;
         const bank = document.getElementById('chipBank');
         const drop = document.getElementById('dropArea');
@@ -954,11 +714,12 @@
         
         bank.innerHTML = ''; drop.innerHTML = ''; fb.style.display = 'none';
 
+        // Shuffle
         let chips = [...data.words].sort(() => Math.random() - 0.5);
 
         chips.forEach(word => {
             const chip = document.createElement('div');
-            chip.className = 'word-chip';
+            chip.className = 'chip';
             chip.innerText = word;
             chip.onclick = () => {
                 if(chip.parentElement === bank) {
@@ -974,30 +735,28 @@
 
     function checkWorkshop() {
         const attempt = Array.from(document.getElementById('dropArea').children).map(c => c.innerText).join(' ');
-        const correct = wsLevels[wsIndex].correct;
+        const correct = wsData[wsIndex].correct;
         const fb = document.getElementById('wsFeedback');
         
         fb.style.display = 'block';
         if(attempt === correct) {
-            fb.style.background = '#dcfce7'; fb.style.color = '#14532d';
-            fb.innerHTML = '<i class="fas fa-check-circle"></i> <b>Correct!</b> Structure verified.';
+            fb.className = 'feedback success';
+            fb.innerHTML = '<i class="fas fa-check-circle"></i> Correct! Structure verified.';
             confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
             speak("Correct!");
             setTimeout(() => {
-                wsIndex = (wsIndex + 1) % wsLevels.length;
+                wsIndex = (wsIndex + 1) % wsData.length;
                 initWorkshop();
             }, 2000);
         } else {
-            fb.style.background = '#fee2e2'; fb.style.color = '#7f1d1d';
-            fb.innerHTML = '<i class="fas fa-times-circle"></i> <b>Incorrect.</b> Check word order.';
+            fb.className = 'feedback error';
+            fb.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect order. Try again.';
             speak("Try again");
         }
     }
-    
-    function resetWorkshop() { initWorkshop(); }
 
-    // --- DICTATION LOGIC ---
-    const dictationSentences = [
+    // --- 4. DICTATION LOGIC ---
+    const dicSentences = [
         "She cooked dinner last night",
         "They didn't play soccer",
         "Where did you buy that",
@@ -1013,36 +772,33 @@
         document.getElementById('dictFeedback').style.display = 'none';
     }
 
-    function playDictation() {
-        speak(dictationSentences[dicIndex]);
-    }
+    function playDictation() { speak(dicSentences[dicIndex]); }
 
     function checkDictation() {
         const val = document.getElementById('dictInput').value.trim();
-        const target = dictationSentences[dicIndex];
+        const target = dicSentences[dicIndex];
         const fb = document.getElementById('dictFeedback');
         
         fb.style.display = 'block';
-        
         const cleanVal = val.replace(/[.,?]/g, '').toLowerCase().trim();
         const cleanTarget = target.replace(/[.,?]/g, '').toLowerCase().trim();
 
         if(cleanVal === cleanTarget) {
-            fb.style.background = '#dcfce7'; fb.style.color = '#14532d';
+            fb.className = 'feedback success';
             fb.innerHTML = `<b>Perfect!</b> "${target}"`;
             confetti({ particleCount: 50, spread: 50 });
             setTimeout(() => {
-                dicIndex = (dicIndex + 1) % dictationSentences.length;
+                dicIndex = (dicIndex + 1) % dicSentences.length;
                 initDictation();
-            }, 2500);
+            }, 2000);
         } else {
-            fb.style.background = '#fee2e2'; fb.style.color = '#7f1d1d';
-            fb.innerHTML = `<b>Not quite.</b> Listen closely.`;
+            fb.className = 'feedback error';
+            fb.innerHTML = `Not quite. Listen closely.`;
         }
     }
 
-    // --- QUIZ LOGIC ---
-    const quizData = [
+    // --- 5. QUIZ LOGIC ---
+    const quizQ = [
         { q: "I ____ (watch) TV last night.", opts: ["watched", "watch", "watchd"], a: "watched" },
         { q: "Where ____ (be) you yesterday?", opts: ["did", "was", "were"], a: "were" },
         { q: "She ____ (not/go) to the party.", opts: ["didn't went", "didn't go", "no went"], a: "didn't go" },
@@ -1065,54 +821,36 @@
     }
 
     function renderQuestion() {
-        if(qIndex >= quizData.length) return finishQuiz();
+        if(qIndex >= quizQ.length) return finishQuiz();
         
-        const data = quizData[qIndex];
+        const data = quizQ[qIndex];
         document.getElementById('questionBox').innerText = `${qIndex+1}. ${data.q}`;
-        
-        const optsBox = document.getElementById('optionsBox');
-        optsBox.innerHTML = '';
+        const box = document.getElementById('optionsBox');
+        box.innerHTML = '';
         
         data.opts.forEach(opt => {
             const btn = document.createElement('button');
-            btn.className = 'btn-xl';
+            btn.className = 'btn-xl btn-secondary';
             btn.style.marginTop = '10px';
-            btn.style.background = 'var(--surface)';
-            btn.style.color = 'var(--text-main)';
-            btn.style.border = '1px solid var(--border)';
             btn.innerText = opt;
-            btn.onclick = () => handleAnswer(opt, data.a);
-            optsBox.appendChild(btn);
+            btn.onclick = () => {
+                if(opt === data.a) score++;
+                qIndex++;
+                renderQuestion();
+            };
+            box.appendChild(btn);
         });
-
-        const pct = (qIndex / quizData.length) * 100;
-        document.getElementById('quizProgress').style.width = `${pct}%`;
-    }
-
-    function handleAnswer(selected, correct) {
-        if(selected === correct) score++;
-        qIndex++;
-        renderQuestion();
+        
+        document.getElementById('quizProgress').style.width = `${(qIndex / quizQ.length) * 100}%`;
     }
 
     function finishQuiz() {
         document.getElementById('quiz-ui').style.display = 'none';
         document.getElementById('quiz-results').style.display = 'block';
         document.getElementById('finalScore').innerText = `Score: ${score} / 10`;
-        if(score >= 8) {
-            confetti({ particleCount: 200, spread: 100 });
-            speak("Congratulations! Certification complete.");
-        } else {
-            speak("Keep practicing.");
-        }
+        if(score >= 8) confetti();
     }
-
-    // Inicialización
-    window.onload = () => {
-        const pref = localStorage.getItem('rators-premium-theme');
-        if(pref === 'dark') document.body.classList.add('dark-mode');
-        
-        // Forzar carga de voces al iniciar
-        loadVoices();
-    };
 </script>
+
+</body>
+</html>
