@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Past Simple Lab | Rators Club</title>
+    <title>Past Simple Titan | Rators Club</title>
     
     <link rel="icon" href="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w128" type="image/png">
     
@@ -13,501 +13,811 @@
 
     <style>
         /* ========================================
-           DESIGN SYSTEM: TIME CAPSULE EDITION
+           DESIGN SYSTEM: TITAN EDITION (900+ Lines Scope)
            ======================================== */
         :root {
-            --bg-color: #fdfcf9;
-            --surface-color: #ffffff;
-            --surface-hover: #f4f5f7;
-            --header-bg: rgba(255, 255, 255, 0.95);
-            
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            
-            /* Colores Funcionales */
-            --was-mode: #7c3aed; /* Violeta para Was/Were */
-            --was-light: rgba(124, 58, 237, 0.08);
-            --did-mode: #059669; /* Verde para Acciones/Did */
-            --did-light: rgba(5, 150, 105, 0.08);
-            --alert: #dc2626;
-            
-            --border-color: #e5e7eb;
-            --radius-card: 28px;
-            --shadow-soft: 0 10px 40px rgba(0,0,0,0.04);
+            /* Core Palette */
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-2: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+
+            /* Functional Colors */
+            --brand: #3730a3;
+            --was-color: #8b5cf6; /* Violet */
+            --did-color: #10b981; /* Emerald */
+            --time-color: #f59e0b; /* Amber */
+            --alert: #ef4444;
+            --success: #22c55e;
+
+            /* Effects */
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 50px -10px rgba(0, 0, 0, 0.15);
+            --glow-was: 0 0 20px rgba(139, 92, 246, 0.3);
+            --glow-did: 0 0 20px rgba(16, 185, 129, 0.3);
         }
 
         .dark-mode {
-            --bg-color: #0f1115; 
-            --surface-color: #1a1d24;
-            --header-bg: rgba(15, 17, 21, 0.95);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --was-mode: #a78bfa;
-            --did-mode: #34d399;
-            --border-color: #2d3139;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-2: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --brand: #818cf8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { 
-            font-family: 'Nunito Sans', sans-serif; background: var(--bg-color); color: var(--text-main); 
-            line-height: 1.6; transition: 0.4s ease;
-        }
         
-        h1, h2, h3 { font-family: 'Lora', serif; font-weight: 700; }
+        body { 
+            font-family: 'Nunito Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Lora', serif; font-weight: 700; line-height: 1.2; }
         .mono { font-family: 'JetBrains Mono', monospace; }
 
-        /* --- Header & Sidebar --- */
-        header {
-            padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; background: var(--header-bg);
-            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo-area { display: flex; align-items: center; gap: 15px; font-weight: 800; color: var(--text-main); font-size: 1.4rem; }
-        .logo-area img { width: 45px; height: 45px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); } }
 
-        .menu-btn { background: transparent; border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 12px; cursor: pointer; color: var(--text-main); font-size: 1.2rem; transition: 0.3s; }
-        .menu-btn:hover { background: var(--surface-hover); transform: scale(1.05); }
-
+        /* --- NAVIGATION SIDEBAR --- */
         .sidebar {
-            position: fixed; top: 0; right: -100%; width: 100%; max-width: 350px; height: 100%; background: var(--surface-color);
-            z-index: 2000; padding: 2rem; transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border-left: 1px solid var(--border-color);
-            box-shadow: -10px 0 40px rgba(0,0,0,0.1); display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; height: 100vh; width: 280px;
+            background: var(--surface); border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem; z-index: 1000; overflow-y: auto;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .sidebar.active { right: 0; }
         
-        .nav-btn {
-            width: 100%; text-align: left; padding: 15px 20px; background: transparent; border: none; border-radius: 15px;
-            font-size: 1.1rem; font-weight: 600; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 15px; margin-bottom: 10px; transition: 0.2s;
+        .brand-box {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 3rem;
+            font-size: 1.2rem; font-weight: 800; color: var(--text-main);
         }
-        .nav-btn:hover { background: var(--surface-hover); color: var(--text-main); }
-        .nav-btn.active { background: var(--was-light); color: var(--was-mode); font-weight: 700; }
+        .brand-box img { width: 40px; height: 40px; border-radius: 10px; box-shadow: var(--shadow-sm); }
 
-        /* --- Layout --- */
-        .container { max-width: 1000px; margin: 0 auto; padding: 3rem 1.5rem; }
-        .section { display: none; animation: fadeIn 0.6s ease; }
+        .nav-group { margin-bottom: 2rem; }
+        .nav-label { 
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; 
+            color: var(--text-muted); font-weight: 800; margin-bottom: 1rem; padding-left: 10px;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+            border-radius: 12px; color: var(--text-muted); font-weight: 600;
+            cursor: pointer; transition: 0.2s; margin-bottom: 5px;
+        }
+        .nav-item:hover { background: var(--surface-2); color: var(--text-main); }
+        .nav-item.active { background: var(--brand); color: white; box-shadow: var(--shadow-md); }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+
+        /* --- MOBILE TOGGLE --- */
+        .menu-toggle {
+            position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
+            background: var(--brand); color: white; border-radius: 50%;
+            display: none; align-items: center; justify-content: center;
+            font-size: 1.5rem; box-shadow: var(--shadow-lg); z-index: 2000; cursor: pointer;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .main-wrapper {
+            margin-left: 280px; padding: 3rem 2rem; max-width: 1100px;
+        }
+
+        .section { display: none; animation: slideUp 0.6s ease; }
         .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* --- CARDS & CONTAINERS --- */
         .card {
-            background: var(--surface-color); border-radius: var(--radius-card); padding: 3.5rem;
-            box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); margin-bottom: 2rem; position: relative; overflow: hidden;
+            background: var(--surface); border-radius: 24px; padding: 3rem;
+            border: 1px solid var(--border); box-shadow: var(--shadow-md);
+            margin-bottom: 2.5rem; position: relative; overflow: hidden;
         }
+        
+        .card-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+        .card-title { font-size: 2.2rem; color: var(--text-main); margin-bottom: 0.5rem; }
+        .card-subtitle { font-size: 1.1rem; color: var(--text-muted); }
 
-        /* --- Split Concept Visuals --- */
-        .split-concept { display: flex; gap: 20px; margin: 3rem 0; flex-wrap: wrap; }
-        .concept-box { flex: 1; padding: 25px; border-radius: 20px; border: 2px solid transparent; min-width: 280px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .concept-box:hover { transform: translateY(-5px); }
-        
-        .box-was { background: var(--was-light); border-color: var(--was-mode); }
-        .box-was h3 { color: var(--was-mode); font-size: 1.8rem; margin-bottom: 10px; }
-        
-        .box-did { background: var(--did-light); border-color: var(--did-mode); }
-        .box-did h3 { color: var(--did-mode); font-size: 1.8rem; margin-bottom: 10px; }
-
-        /* --- Logic Panels (Formulas) --- */
-        .formula-card { background: var(--surface-hover); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; border-left: 5px solid var(--text-muted); }
-        .formula-card.was { border-color: var(--was-mode); }
-        .formula-card.did { border-color: var(--did-mode); }
-        
-        .structure { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; color: var(--text-main); }
-        .node { padding: 8px 16px; border-radius: 10px; background: var(--surface-color); border: 1px solid var(--border-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        
-        .tag-subj { color: var(--text-muted); border-color: var(--text-muted); }
-        .tag-was { color: var(--was-mode); border-color: var(--was-mode); background: rgba(124, 58, 237, 0.05); }
-        .tag-did { color: var(--did-mode); border-color: var(--did-mode); background: rgba(5, 150, 105, 0.05); }
-        .tag-verb { color: var(--text-main); font-weight: 800; }
-        
-        .example-row { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color); }
-        .audio-btn { background: transparent; border: 1px solid var(--border-color); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .audio-btn:hover { color: var(--text-main); border-color: var(--text-main); background: white; }
-
-        /* --- Interactive Workshop --- */
-        .workshop-area { text-align: center; margin-top: 2rem; }
-        .drop-zone { 
-            min-height: 80px; border: 2px dashed var(--border-color); border-radius: 16px; 
-            margin: 20px 0; padding: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center;
-            transition: 0.3s; background: var(--surface-hover);
+        /* --- VISUAL EXPLAINERS --- */
+        .dual-core-visual {
+            display: flex; gap: 20px; margin: 3rem 0;
         }
-        .word-dock { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; min-height: 60px; }
-        
-        .word-chip { 
-            padding: 10px 20px; background: var(--surface-color); border: 1px solid var(--border-color); 
-            border-radius: 12px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.05); 
-            transition: 0.2s; font-family: 'JetBrains Mono'; color: var(--text-main);
+        .core-box {
+            flex: 1; padding: 2rem; border-radius: 20px; text-align: center;
+            border: 2px solid transparent; transition: 0.3s; cursor: pointer;
         }
-        .word-chip:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.05); }
-        .word-chip:active { transform: translateY(2px); box-shadow: 0 0 0 transparent; }
+        .core-box:hover { transform: translateY(-5px); }
+        
+        .core-was { background: rgba(139, 92, 246, 0.05); border-color: var(--was-color); }
+        .core-was h3 { color: var(--was-color); margin-bottom: 10px; font-size: 1.5rem; }
+        .core-was:hover { box-shadow: var(--glow-was); }
 
-        .feedback-box { margin-top: 20px; padding: 15px; border-radius: 12px; display: none; font-weight: 600; text-align: left; animation: fadeIn 0.4s; }
-        .feedback-good { background: rgba(5, 150, 105, 0.1); color: var(--did-mode); border: 1px solid var(--did-mode); }
-        .feedback-bad { background: rgba(220, 38, 38, 0.1); color: var(--alert); border: 1px solid var(--alert); }
+        .core-did { background: rgba(16, 185, 129, 0.05); border-color: var(--did-color); }
+        .core-did h3 { color: var(--did-color); margin-bottom: 10px; font-size: 1.5rem; }
+        .core-did:hover { box-shadow: var(--glow-did); }
 
-        /* --- Action Buttons --- */
-        .btn-primary {
-            background: var(--text-main); color: var(--bg-color); border: none; padding: 16px 32px;
-            border-radius: 30px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
-            display: inline-flex; align-items: center; gap: 10px; margin-top: 1rem;
+        /* --- FORMULA BUILDER --- */
+        .formula-container {
+            background: var(--surface-2); border-radius: 16px; padding: 1.5rem;
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+            margin-bottom: 1.5rem; font-family: 'JetBrains Mono';
         }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        
-        .btn-verify { width: 100%; justify-content: center; background: var(--did-mode); color: white; margin-top: 20px; }
-        .btn-verify:hover { background: #047857; }
+        .node {
+            padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.9rem;
+            background: var(--surface); border: 1px solid var(--border);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .node.subj { border-left: 4px solid var(--text-main); }
+        .node.was { background: var(--was-color); color: white; border-color: var(--was-color); }
+        .node.did { background: var(--did-color); color: white; border-color: var(--did-color); }
+        .node.verb { border-style: dashed; color: var(--text-main); }
+        .node.warn { background: var(--alert); color: white; border-color: var(--alert); animation: pulse 2s infinite; }
 
-        /* --- Footer & Misc --- */
-        footer { margin-top: 4rem; text-align: center; color: var(--text-muted); opacity: 0.7; font-size: 0.9rem; padding-bottom: 2rem;}
+        /* --- INTERACTIVE TABLES --- */
+        .conj-table {
+            width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 1rem;
+        }
+        .conj-table th { text-align: left; padding: 15px; color: var(--text-muted); border-bottom: 2px solid var(--border); }
+        .conj-table td { padding: 15px; border-bottom: 1px solid var(--border); }
+        .conj-table tr:hover { background: var(--surface-2); }
         
-        @media (max-width: 768px) {
-            .card { padding: 2rem 1.5rem; }
-            h1 { font-size: 2.2rem; }
-            .split-concept { flex-direction: column; }
+        .audio-btn {
+            background: transparent; border: 1px solid var(--border); width: 32px; height: 32px;
+            border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+            color: var(--text-muted); transition: 0.2s;
+        }
+        .audio-btn:hover { background: var(--text-main); color: var(--bg); border-color: var(--text-main); }
+
+        /* --- SPELLING RULES --- */
+        .rule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 2rem; }
+        .rule-card { 
+            background: var(--surface); border: 1px solid var(--border); padding: 25px; border-radius: 16px; 
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .rule-card::before { 
+            content:''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--text-muted); 
+        }
+        .rule-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .rule-card h4 { font-size: 1.2rem; margin-bottom: 10px; color: var(--text-main); }
+        .rule-ex { font-family: 'JetBrains Mono'; color: var(--did-color); font-weight: 700; margin-top: 10px; display: block;}
+
+        /* --- PHONICS DECK --- */
+        .phonics-deck { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; }
+        .sound-card {
+            min-width: 200px; padding: 30px 20px; border-radius: 20px; background: var(--surface);
+            border: 2px solid var(--border); text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .sound-card:hover { border-color: var(--did-color); background: rgba(16, 185, 129, 0.05); }
+        .symbol { font-size: 3rem; font-weight: 800; color: var(--did-color); display: block; margin-bottom: 10px; font-family: 'Lora'; }
+
+        /* --- WORKSHOP & QUIZ ELEMENTS --- */
+        .drop-area {
+            min-height: 100px; border: 2px dashed var(--border); border-radius: 16px;
+            background: var(--surface-2); display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+            gap: 10px; padding: 20px; margin: 20px 0; transition: 0.3s;
+        }
+        .drop-area.active { border-color: var(--brand); background: rgba(55, 48, 163, 0.05); }
+        
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 20px; }
+        
+        .chip {
+            padding: 10px 20px; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; font-family: 'JetBrains Mono'; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05); transition: 0.1s; user-select: none;
+        }
+        .chip:active { transform: translateY(4px); box-shadow: none; }
+        .chip:hover { border-color: var(--brand); color: var(--brand); }
+
+        .btn-action {
+            width: 100%; padding: 18px; border-radius: 16px; border: none; font-size: 1.1rem;
+            font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: var(--text-main); color: var(--bg); margin-top: 2rem;
+        }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .btn-action.secondary { background: transparent; border: 2px solid var(--border); color: var(--text-main); }
+        .btn-action.secondary:hover { background: var(--surface-2); }
+
+        /* --- DICTATION BOX --- */
+        .dictation-box {
+            margin-top: 2rem; padding: 2rem; border-radius: 20px; background: var(--surface-2); text-align: center;
+        }
+        .input-line {
+            width: 100%; border: none; border-bottom: 2px solid var(--text-muted); background: transparent;
+            font-size: 1.5rem; text-align: center; padding: 10px; font-family: 'Lora'; color: var(--text-main);
+            outline: none; transition: 0.3s; margin: 20px 0;
+        }
+        .input-line:focus { border-color: var(--brand); }
+
+        /* --- FEEDBACK --- */
+        .feedback { 
+            padding: 20px; border-radius: 12px; margin-top: 20px; display: none; font-size: 1.1rem;
+            animation: fadeIn 0.4s;
+        }
+        .feedback.good { background: #dcfce7; color: #14532d; border: 1px solid #86efac; }
+        .feedback.bad { background: #fee2e2; color: #7f1d1d; border: 1px solid #fca5a5; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-wrapper { margin-left: 0; padding: 80px 1.5rem 2rem; }
+            .menu-toggle { display: flex; }
+            .dual-core-visual { flex-direction: column; }
+            h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
-<body>
+<body onclick="unlockAudio()">
 
-<header>
-    <div class="logo-area" onclick="nav('home')">
-        <img src="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w128" alt="Rators Logo">
-        <span>The Time Capsule</span>
-    </div>
-    <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-</header>
-
-<div class="sidebar" id="sidebar">
-    <button class="menu-btn" style="align-self: flex-end; margin-bottom: 2rem;" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
-    
-    <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 1rem;">Módulos</div>
-    <button class="nav-btn active" onclick="nav('home', this)"><i class="fas fa-hourglass-start"></i> Introducción</button>
-    <button class="nav-btn" onclick="nav('waswere', this)"><i class="fas fa-ghost"></i> The State (Was/Were)</button>
-    <button class="nav-btn" onclick="nav('actions', this)"><i class="fas fa-running"></i> The Action (Regulars)</button>
-    <button class="nav-btn" onclick="nav('workshop', this)"><i class="fas fa-puzzle-piece"></i> Structure Workshop</button>
-    <button class="nav-btn" onclick="nav('quiz', this)"><i class="fas fa-check-circle"></i> Evaluación</button>
+<div class="menu-toggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
 </div>
 
-<div class="container">
+<nav class="sidebar" id="sidebar">
+    <div class="brand-box">
+        <img src="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w128" alt="Rators Logo">
+        Rators Labs
+    </div>
 
-    <section id="sec-home" class="section active">
+    <div class="nav-group">
+        <div class="nav-label">Core Concepts</div>
+        <div class="nav-item active" onclick="nav('intro', this)"><i class="fas fa-cube"></i> The Dual System</div>
+        <div class="nav-item" onclick="nav('waswere', this)"><i class="fas fa-ghost"></i> The State (Was/Were)</div>
+        <div class="nav-item" onclick="nav('regular', this)"><i class="fas fa-running"></i> The Action (Regulars)</div>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-label">Mechanics</div>
+        <div class="nav-item" onclick="nav('spelling', this)"><i class="fas fa-pencil-alt"></i> Spelling Rules</div>
+        <div class="nav-item" onclick="nav('time', this)"><i class="fas fa-clock"></i> Time Machine</div>
+        <div class="nav-item" onclick="nav('negative', this)"><i class="fas fa-ban"></i> The "Did" Trap</div>
+        <div class="nav-item" onclick="nav('phonics', this)"><i class="fas fa-headphones"></i> The -ED Sounds</div>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-label">Challenge</div>
+        <div class="nav-item" onclick="nav('workshop', this)"><i class="fas fa-hammer"></i> Structure Workshop</div>
+        <div class="nav-item" onclick="nav('dictation', this)"><i class="fas fa-microphone-alt"></i> Dictation Mode</div>
+        <div class="nav-item" onclick="nav('quiz', this)"><i class="fas fa-trophy"></i> Final Certification</div>
+    </div>
+
+    <button class="nav-item" onclick="toggleTheme()" style="width:100%; justify-content:center; margin-top:2rem;">
+        <i class="fas fa-moon"></i> Dark Mode
+    </button>
+</nav>
+
+<main class="main-wrapper">
+
+    <section id="sec-intro" class="section active">
         <div class="card">
-            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Closed <span style="color:var(--text-muted);">Chapters</span></h1>
-            <p style="font-size: 1.2rem;">El <b>Pasado Simple</b> es como un libro de historia. Habla de acciones que empezaron y terminaron en un tiempo específico. Ya no están vivas.</p>
-            
-            <div style="background: #fff3cd; border-left: 5px solid #d97706; padding: 20px; border-radius: 10px; margin: 2rem 0;">
-                <h3 style="color: #d97706; margin-bottom: 5px;">⚠️ La Regla de Oro</h3>
-                <p style="margin:0; font-size: 1rem;">Nunca mezcles "SER" con "HACER". En inglés son dos caminos separados.</p>
+            <div class="card-header">
+                <span class="tag-pill tag-state" style="background:#e0e7ff; color:var(--brand); padding:5px 10px; border-radius:15px; font-weight:800; font-size:0.8rem;">UNIT 01</span>
+                <h1 class="card-title">The <span style="color:var(--brand);">Dual Core</span> System</h1>
+                <p class="card-subtitle">Bienvenido al Protocolo de Pasado Simple. Para dominar este tiempo, debes entender que existen dos caminos paralelos que nunca se cruzan.</p>
             </div>
 
-            <div class="split-concept">
-                <div class="concept-box box-was" onclick="nav('waswere')">
-                    <h3>Was / Were</h3>
-                    <p><b>Descripción y Estado.</b><br>Yo estaba, ella era, nosotros estábamos.<br><i>(No usa auxiliares)</i></p>
+            <div class="dual-core-visual">
+                <div class="core-box core-was" onclick="nav('waswere')">
+                    <i class="fas fa-ghost" style="font-size:3rem; color:var(--was-color); margin-bottom:20px;"></i>
+                    <h3>The State</h3>
+                    <p>Describe <b>existencia, ubicación, edad o emociones</b>. No hay movimiento físico.</p>
+                    <div style="background:white; padding:10px; border-radius:10px; border:1px solid var(--was-color); display:inline-block; font-family:'JetBrains Mono'; margin-top:10px;">Was / Were</div>
                 </div>
-                <div class="concept-box box-did" onclick="nav('actions')">
-                    <h3>Regular Verbs</h3>
-                    <p><b>Acciones Concretas.</b><br>Yo trabajé, ella estudió, ellos jugaron.<br><i>(Usa terminación -ed y auxiliar Did)</i></p>
+                
+                <div class="core-box core-did" onclick="nav('regular')">
+                    <i class="fas fa-running" style="font-size:3rem; color:var(--did-color); margin-bottom:20px;"></i>
+                    <h3>The Action</h3>
+                    <p>Describe <b>eventos y actividades</b> que empezaron y terminaron.</p>
+                    <div style="background:white; padding:10px; border-radius:10px; border:1px solid var(--did-color); display:inline-block; font-family:'JetBrains Mono'; margin-top:10px;">Verbs + ED / Did</div>
                 </div>
             </div>
 
-            <button class="btn-primary" onclick="nav('waswere')">Entrar al Primer Carril <i class="fas fa-arrow-right"></i></button>
+            <div style="background:var(--surface-2); padding:20px; border-radius:15px; border-left:5px solid var(--alert);">
+                <h4 style="color:var(--alert); margin-bottom:5px;"><i class="fas fa-exclamation-triangle"></i> Fatal Error Warning</h4>
+                <p style="margin:0; font-size:1rem;">Nunca digas "Did you were happy?". Estás mezclando los dos carriles. O usas <b>Did</b> o usas <b>Were</b>, nunca ambos.</p>
+            </div>
+
+            <button class="btn-action" style="background:var(--brand);" onclick="nav('waswere')">Iniciar en el Carril de Estado <i class="fas fa-arrow-right"></i></button>
         </div>
     </section>
 
     <section id="sec-waswere" class="section">
-        <div class="card">
-            <h2 style="color: var(--was-mode);">The State: <span class="mono">Was / Were</span></h2>
-            <p>Este es el pasado del verbo <b>To Be</b>. Aquí describimos cómo eran las cosas o dónde estaba la gente. <b>¡PROHIBIDO USAR "DID" AQUÍ!</b></p>
-
-            <div class="formula-card was">
-                <div style="text-transform:uppercase; font-size:0.8rem; font-weight:800; color:var(--was-mode); margin-bottom:10px;">Afirmativo</div>
-                <div class="structure">
-                    <span class="node tag-subj">Sujeto</span> + 
-                    <span class="node tag-was">Was / Were</span> + 
-                    <span class="node">Complemento</span>
-                </div>
-                <div class="example-row">
-                    <span class="mono">I <b>was</b> happy yesterday.</span>
-                    <button class="audio-btn" onclick="speak('I was happy yesterday')"><i class="fas fa-volume-up"></i></button>
-                </div>
-                <div class="example-row">
-                    <span class="mono">They <b>were</b> at school.</span>
-                    <button class="audio-btn" onclick="speak('They were at school')"><i class="fas fa-volume-up"></i></button>
-                </div>
+        <div class="card" style="border-top:5px solid var(--was-color);">
+            <div class="card-header">
+                <h1 class="card-title">The State: <span style="color:var(--was-color);">Was / Were</span></h1>
+                <p class="card-subtitle">El pasado del verbo To Be. Aquí NO usamos auxiliares como 'Did'. El verbo se manda solo.</p>
             </div>
 
-            <div class="formula-card was">
-                <div style="text-transform:uppercase; font-size:0.8rem; font-weight:800; color:var(--was-mode); margin-bottom:10px;">Pregunta (El Intercambio)</div>
-                <p style="font-size:0.9rem; margin-bottom:15px;">Solo intercambia el orden. El verbo va primero.</p>
-                <div class="structure">
-                    <span class="node tag-was">Was / Were</span> + 
-                    <span class="node tag-subj">Sujeto</span> + 
-                    <span class="node">Complemento</span> ?
-                </div>
-                <div class="example-row">
-                    <span class="mono"><b>Were</b> you tired?</span>
-                    <button class="audio-btn" onclick="speak('Were you tired?')"><i class="fas fa-volume-up"></i></button>
-                </div>
-                
-                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.1);">
-                    <div style="font-weight:700; color:var(--text-muted); margin-bottom:5px;">WH- Question:</div>
-                    <div class="structure">
-                        <span class="node" style="background:#f3f4f6;">WH-</span> + 
-                        <span class="node tag-was">Was</span> + 
-                        <span class="node tag-subj">Subject</span> ?
-                    </div>
-                    <div class="example-row">
-                        <span class="mono">Where <b>was</b> she?</span>
-                        <button class="audio-btn" onclick="speak('Where was she?')"><i class="fas fa-volume-up"></i></button>
-                    </div>
-                </div>
+            <h3>1. Affirmative</h3>
+            <div class="formula-container">
+                <div class="node subj">I / He / She / It</div> <i class="fas fa-plus"></i>
+                <div class="node was">WAS</div> <i class="fas fa-plus"></i>
+                <div class="node">Adjective / Place</div>
+            </div>
+            <div class="formula-container">
+                <div class="node subj">You / We / They</div> <i class="fas fa-plus"></i>
+                <div class="node was">WERE</div> <i class="fas fa-plus"></i>
+                <div class="node">Adjective / Place</div>
             </div>
 
-            <button class="btn-primary" style="background:var(--did-mode);" onclick="nav('actions')">Ver Verbos de Acción <i class="fas fa-arrow-right"></i></button>
+            <h3>2. Questions (The Swap)</h3>
+            <p>Para preguntar, simplemente intercambiamos el orden. El verbo va primero.</p>
+            <div class="formula-container" style="border-color:var(--was-color);">
+                <div class="node was">WAS / WERE</div> <i class="fas fa-plus"></i>
+                <div class="node subj">Subject</div> <i class="fas fa-plus"></i>
+                <div class="node">Complement</div> <div class="node">?</div>
+            </div>
+
+            <table class="conj-table">
+                <tr>
+                    <th width="10%">Audio</th>
+                    <th>Sentence</th>
+                    <th>Translation</th>
+                </tr>
+                <tr>
+                    <td><button class="audio-btn" onclick="speak('I was tired yesterday')"><i class="fas fa-volume-up"></i></button></td>
+                    <td class="mono">I <b>was</b> tired yesterday.</td>
+                    <td>Estaba cansado ayer.</td>
+                </tr>
+                <tr>
+                    <td><button class="audio-btn" onclick="speak('They were at the cinema')"><i class="fas fa-volume-up"></i></button></td>
+                    <td class="mono">They <b>were</b> at the cinema.</td>
+                    <td>Ellos estaban en el cine.</td>
+                </tr>
+                <tr>
+                    <td><button class="audio-btn" onclick="speak('Were you happy?')"><i class="fas fa-volume-up"></i></button></td>
+                    <td class="mono"><b>Were</b> you happy?</td>
+                    <td>¿Estabas feliz?</td>
+                </tr>
+            </table>
+
+            <button class="btn-action secondary" onclick="nav('regular')">Pasar a Verbos de Acción <i class="fas fa-running"></i></button>
         </div>
     </section>
 
-    <section id="sec-actions" class="section">
+    <section id="sec-regular" class="section">
+        <div class="card" style="border-top:5px solid var(--did-color);">
+            <div class="card-header">
+                <h1 class="card-title">The Action: <span style="color:var(--did-color);">Regular Verbs</span></h1>
+                <p class="card-subtitle">Para narrar historias, usamos verbos de acción. Si el verbo es regular, la regla maestra es agregar <b>-ED</b>.</p>
+            </div>
+
+            <div class="formula-container">
+                <div class="node subj">Subject</div> <i class="fas fa-plus"></i>
+                <div class="node did">Verb + ED</div> <i class="fas fa-plus"></i>
+                <div class="node">Complement</div>
+            </div>
+
+            <div class="rule-grid">
+                <div class="rule-card" onclick="speak('I worked all day.')">
+                    <h4>Work &rarr; Worked</h4>
+                    <p>El estándar. Solo agrega ED.</p>
+                    <span class="rule-ex">I worked all day.</span>
+                </div>
+                <div class="rule-card" onclick="speak('She played tennis.')">
+                    <h4>Play &rarr; Played</h4>
+                    <p>Si termina en vocal + Y, solo agrega ED.</p>
+                    <span class="rule-ex">She played tennis.</span>
+                </div>
+                <div class="rule-card" onclick="speak('We lived there.')">
+                    <h4>Live &rarr; Lived</h4>
+                    <p>Si ya termina en E, solo agrega la D.</p>
+                    <span class="rule-ex">We lived there.</span>
+                </div>
+            </div>
+
+            <button class="btn-action" style="background:var(--did-color);" onclick="nav('spelling')">Ver Reglas de Ortografía (-IED, -PPED) <i class="fas fa-pencil-alt"></i></button>
+        </div>
+    </section>
+
+    <section id="sec-spelling" class="section">
         <div class="card">
-            <h2 style="color: var(--did-mode);">The Action: <span class="mono">Regular Verbs</span></h2>
-            <p>Aquí hablamos de acciones terminadas. Para los verbos regulares, agregamos la terminación <b>-ed</b>.</p>
+            <h1 class="card-title">Spelling <span style="color:var(--text-muted);">Architecture</span></h1>
+            <p>No siempre es tan simple como poner -ed. Hay 2 excepciones críticas que debes dominar para escribir correctamente.</p>
 
-            <div class="formula-card did">
-                <div style="text-transform:uppercase; font-size:0.8rem; font-weight:800; color:var(--did-mode); margin-bottom:10px;">Afirmativo (-ED)</div>
-                <div class="structure">
-                    <span class="node tag-subj">Sujeto</span> + 
-                    <span class="node tag-did">Verbo-ED</span> + 
-                    <span class="node">Complemento</span>
+            <div class="dual-core-visual">
+                <div class="core-box" style="border-color:var(--border);">
+                    <div style="font-size:3rem; font-weight:800; margin-bottom:10px; color:var(--text-main);">Y &rarr; IED</div>
+                    <h3>Consonant + Y</h3>
+                    <p>Si el verbo termina en Consonante + Y, eliminamos la Y y ponemos <b>ied</b>.</p>
+                    <div style="margin-top:20px; font-family:'JetBrains Mono';">
+                        Study &rarr; Stud<b style="color:var(--did-color);">ied</b><br>
+                        Cry &rarr; Cr<b style="color:var(--did-color);">ied</b><br>
+                        Try &rarr; Tr<b style="color:var(--did-color);">ied</b>
+                    </div>
                 </div>
-                <div class="example-row">
-                    <span class="mono">She <b>cooked</b> dinner.</span>
-                    <button class="audio-btn" onclick="speak('She cooked dinner')"><i class="fas fa-volume-up"></i></button>
+
+                <div class="core-box" style="border-color:var(--border);">
+                    <div style="font-size:3rem; font-weight:800; margin-bottom:10px; color:var(--text-main);">CVC</div>
+                    <h3>Double Consonant</h3>
+                    <p>Si el verbo es corto (1 sílaba) y termina en Consonante-Vocal-Consonante, duplicamos la última letra.</p>
+                    <div style="margin-top:20px; font-family:'JetBrains Mono';">
+                        Stop &rarr; Stop<b style="color:var(--did-color);">ped</b><br>
+                        Plan &rarr; Plan<b style="color:var(--did-color);">ned</b><br>
+                        Shop &rarr; Shop<b style="color:var(--did-color);">ped</b>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn-action secondary" onclick="nav('time')">Siguiente: Time Expressions</button>
+        </div>
+    </section>
+
+    <section id="sec-time" class="section">
+        <div class="card">
+            <h1 class="card-title">The <span style="color:var(--time-color);">Time Machine</span></h1>
+            <p>El Pasado Simple necesita anclas temporales. Estas palabras le dicen al oyente exactamente cuándo ocurrió la acción.</p>
+
+            <div class="rule-grid">
+                <div class="rule-card" style="border-left:5px solid var(--time-color);">
+                    <h4>Yesterday</h4>
+                    <p>El día anterior a hoy.</p>
+                    <ul style="margin-left:20px; margin-top:10px;">
+                        <li>Yesterday morning</li>
+                        <li>Yesterday afternoon</li>
+                    </ul>
+                </div>
+                <div class="rule-card" style="border-left:5px solid var(--time-color);">
+                    <h4>Last...</h4>
+                    <p>El anterior. Se usa con períodos.</p>
+                    <ul style="margin-left:20px; margin-top:10px;">
+                        <li>Last night (Anoche)</li>
+                        <li>Last week (La semana pasada)</li>
+                        <li>Last year (El año pasado)</li>
+                    </ul>
+                </div>
+                <div class="rule-card" style="border-left:5px solid var(--time-color);">
+                    <h4>...Ago</h4>
+                    <p>Hace [tiempo]. Siempre va al final.</p>
+                    <ul style="margin-left:20px; margin-top:10px;">
+                        <li>2 days ago (Hace 2 días)</li>
+                        <li>10 minutes ago</li>
+                        <li>A long time ago</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <button class="btn-action" style="background:var(--alert);" onclick="nav('negative')">Alerta: The Did Trap <i class="fas fa-ban"></i></button>
+        </div>
+    </section>
+
+    <section id="sec-negative" class="section">
+        <div class="card" style="border-top:5px solid var(--alert);">
+            <h1 class="card-title" style="color:var(--alert);">The "Did" Trap</h1>
+            <p>Aquí es donde el 90% de los estudiantes fallan. En oraciones Negativas y Preguntas, aparece el auxiliar <b>DID</b>.</p>
+            
+            <div style="background:#fee2e2; padding:20px; border-radius:15px; margin-bottom:2rem; color:#991b1b; display:flex; gap:20px; align-items:center;">
+                <i class="fas fa-radiation" style="font-size:3rem;"></i>
+                <div>
+                    <h3 style="margin:0;">Regla de Toxicidad</h3>
+                    <p style="margin:0;">El auxiliar <b>Did / Didn't</b> es celoso. Si él está en la oración, le roba el pasado al verbo. El verbo debe regresar a su <b>FORMA BASE</b> (sin -ed, sin cambios).</p>
                 </div>
             </div>
 
-            <div style="background: #fff1f2; border: 2px solid #e11d48; padding: 25px; border-radius: 20px; margin-bottom: 2rem;">
-                <h3 style="color: #e11d48; margin-bottom: 10px;"><i class="fas fa-exclamation-triangle"></i> La Regla del Auxiliar Celoso</h3>
-                <p>El auxiliar <b>DID</b> es tóxico. Cuando él aparece (en negaciones y preguntas), le "roba" el pasado al verbo. El verbo principal debe regresar a su <b>FORMA BASE</b> (sin -ed).</p>
+            <h3>Negative Form</h3>
+            <div class="formula-container">
+                <div class="node subj">Subject</div> <i class="fas fa-plus"></i>
+                <div class="node warn">DIDN'T</div> <i class="fas fa-plus"></i>
+                <div class="node verb">Base Verb</div>
             </div>
+            <p class="mono" style="margin-bottom:2rem;">She <b style="color:var(--alert);">didn't</b> <u style="text-decoration-style:wavy;">work</u> yesterday. (NO 'worked')</p>
 
-            <div class="formula-card did">
-                <div style="text-transform:uppercase; font-size:0.8rem; font-weight:800; color:var(--did-mode); margin-bottom:10px;">Negativo & Pregunta</div>
-                
-                <div class="structure" style="margin-bottom: 20px;">
-                    <span class="node tag-subj">Sujeto</span> + 
-                    <span class="node tag-did">Didn't</span> + 
-                    <span class="node tag-verb">Verbo Base</span>
-                </div>
-                <div class="example-row">
-                    <span class="mono">I <b>didn't</b> work yesterday.</span>
-                    <button class="audio-btn" onclick="speak('I didn\'t work yesterday')"><i class="fas fa-volume-up"></i></button>
-                </div>
+            <h3>Question Form</h3>
+            <div class="formula-container">
+                <div class="node" style="background:#e2e8f0;">(WH-)</div> <i class="fas fa-plus"></i>
+                <div class="node warn">DID</div> <i class="fas fa-plus"></i>
+                <div class="node subj">Subject</div> <i class="fas fa-plus"></i>
+                <div class="node verb">Base Verb</div> <div class="node">?</div>
+            </div>
+            <p class="mono">Where <b style="color:var(--alert);">did</b> you <u style="text-decoration-style:wavy;">go</u>? (NO 'went')</p>
 
-                <div style="margin: 25px 0; height: 1px; background: var(--border-color);"></div>
+            <button class="btn-action" onclick="nav('workshop')">Practicar esto ya <i class="fas fa-hammer"></i></button>
+        </div>
+    </section>
 
-                <div class="structure">
-                    <span class="node" style="background:#f3f4f6;">(WH-)</span> +
-                    <span class="node tag-did">Did</span> + 
-                    <span class="node tag-subj">Sujeto</span> + 
-                    <span class="node tag-verb">Verbo Base</span> ?
+    <section id="sec-phonics" class="section">
+        <div class="card">
+            <h1>Phonics Lab</h1>
+            <p>La terminación -ED tiene 3 personalidades. Haz clic para escuchar.</p>
+            
+            <div class="phonics-deck">
+                <div class="sound-card" onclick="speak('Worked. Washed. Kissed.')">
+                    <span class="symbol">/t/</span>
+                    <p><b>Sonido Seco</b></p>
+                    <p style="font-size:0.8rem; color:var(--text-muted);">Verbos que terminan en sonido sordo (K, P, S, SH, CH, F).</p>
+                    <div style="margin-top:10px;">Worked, Washed</div>
                 </div>
-                <div class="example-row">
-                    <span class="mono"><b>Did</b> you play soccer?</span>
-                    <button class="audio-btn" onclick="speak('Did you play soccer?')"><i class="fas fa-volume-up"></i></button>
+                <div class="sound-card" onclick="speak('Played. Lived. Cleaned.')">
+                    <span class="symbol">/d/</span>
+                    <p><b>Vibrante</b></p>
+                    <p style="font-size:0.8rem; color:var(--text-muted);">Verbos que terminan en sonido sonoro o vocal.</p>
+                    <div style="margin-top:10px;">Played, Lived</div>
                 </div>
-                <div class="example-row">
-                    <span class="mono">What <b>did</b> he say?</span>
-                    <button class="audio-btn" onclick="speak('What did he say?')"><i class="fas fa-volume-up"></i></button>
+                <div class="sound-card" onclick="speak('Wanted. Needed. Decided.')" style="border-color:var(--brand); background:rgba(55,48,163,0.05);">
+                    <span class="symbol">/ɪd/</span>
+                    <p><b>Sílaba Extra</b></p>
+                    <p style="font-size:0.8rem; color:var(--text-muted);">SOLO si el verbo termina en <b>T</b> o <b>D</b>.</p>
+                    <div style="margin-top:10px;">Want-ed, Need-ed</div>
                 </div>
             </div>
-
-            <button class="btn-primary" onclick="nav('workshop')">Practicar Estructuras <i class="fas fa-wrench"></i></button>
         </div>
     </section>
 
     <section id="sec-workshop" class="section">
         <div class="card">
-            <h2>Structure <span style="color:var(--primary);">Workshop</span></h2>
-            <p>Ordena las palabras para formar la oración correcta. ¡Cuidado con la regla del "Did"!</p>
+            <h1>Structure <span style="color:var(--brand);">Workshop</span></h1>
+            <p>Construye la oración correcta. Arrastra las palabras al área punteada.</p>
             
-            <div class="workshop-area">
-                <h3 id="targetMeaning" style="font-family:'Nunito Sans'; color:var(--text-muted); margin-bottom:20px;">¿Ella trabajó ayer?</h3>
-                
-                <div class="drop-zone" id="dropZone"></div>
-                <div class="word-dock" id="wordDock"></div>
-                
-                <div class="feedback-box" id="feedbackBox"></div>
-
-                <button class="btn-primary btn-verify" onclick="checkStructure()">Verificar Estructura</button>
-                <button class="nav-btn" style="text-align:center; margin-top:10px; justify-content:center;" onclick="resetWorkshop()">Reiniciar</button>
+            <div style="text-align:center; margin-bottom:2rem;">
+                <h3 id="targetSentence" style="color:var(--text-muted);">...</h3>
             </div>
+
+            <div class="drop-area" id="dropArea"></div>
+            <div class="word-bank" id="chipBank"></div>
+            
+            <div class="feedback" id="wsFeedback"></div>
+
+            <button class="btn-action" onclick="checkWorkshop()">Verificar Estructura</button>
+            <button class="btn-action secondary" onclick="resetWorkshop()">Reiniciar</button>
+        </div>
+    </section>
+
+    <section id="sec-dictation" class="section">
+        <div class="card">
+            <h1>Dictation <span style="color:var(--alert);">Challenge</span></h1>
+            <p>Escucha la oración y escríbela exactamente. Cuidado con el spelling.</p>
+            
+            <div class="dictation-box">
+                <button class="audio-btn" style="width:60px; height:60px; font-size:1.5rem; margin-bottom:20px;" onclick="playDictation()"><i class="fas fa-play"></i></button>
+                <p style="font-size:0.9rem; color:var(--text-muted);">Haz clic para escuchar (3 intentos)</p>
+                
+                <input type="text" class="input-line" id="dictInput" placeholder="Escribe aquí..." autocomplete="off">
+            </div>
+            
+            <div class="feedback" id="dictFeedback"></div>
+
+            <button class="btn-action" onclick="checkDictation()">Comprobar Ortografía</button>
         </div>
     </section>
 
     <section id="sec-quiz" class="section">
         <div class="card">
-            <h2>Evaluación <span style="color:var(--secondary);">Rápida</span></h2>
-            <p>Elige la opción gramaticalmente correcta.</p>
-            <div id="quiz-container"></div>
-            <div id="quiz-result" style="display:none; text-align:center; margin-top:2rem;">
-                <img src="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w256" alt="Success" style="width:100px; border-radius:10px; margin-bottom:15px;">
-                <h3 style="color:var(--did-mode); font-size:2rem;">¡Excelente!</h3>
-                <p>Has dominado la diferencia entre Estados y Acciones.</p>
-                <button class="btn-primary" onclick="location.reload()">Volver al Inicio</button>
+            <h1>Final Certification</h1>
+            <p>10 Preguntas. Sin ayudas. Demuestra que dominas el Dual Core.</p>
+            
+            <div id="quiz-ui">
+                <div class="progress-container" style="margin: 20px 0; width:100%;"><div class="progress-bar" id="quizProgress" style="width:0%;"></div></div>
+                <div id="questionBox" style="margin-bottom:2rem;"></div>
+                <div id="optionsBox"></div>
+            </div>
+
+            <div id="quiz-results" style="display:none; text-align:center;">
+                <img src="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w256" style="width:150px; margin-bottom:20px; border-radius:20px;">
+                <h2 style="color:var(--success); font-size:2.5rem;">Protocolo Completado</h2>
+                <p id="finalScore" style="font-size:1.5rem; font-weight:700;"></p>
+                <button class="btn-action" onclick="location.reload()">Reiniciar Sistema</button>
             </div>
         </div>
     </section>
 
 </div>
 
-<footer>
-    <div style="font-weight:700;">Rators Club • Teacher Netza</div>
-    <div>Platinum Edition 2026</div>
-</footer>
-
 <script>
-    // --- Audio System ---
+    /* ========================================
+       TITAN ENGINE JS
+       ======================================== */
+    
+    // --- UTILS ---
+    const synth = window.speechSynthesis;
+    
     function speak(text) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'en-US'; msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
+        if (synth.speaking) synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'en-US';
+        utter.rate = 0.85;
+        synth.speak(utter);
+    }
+    
+    function unlockAudio() { speak(''); }
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
     }
 
-    // --- Navigation ---
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+    }
+
     function nav(id, btn) {
+        // Sections
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById('sec-' + id).classList.add('active');
         
+        // Sidebar active state
         if(btn) {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            toggleSidebar();
+            if(window.innerWidth <= 900) toggleSidebar();
         }
+        
         window.scrollTo(0,0);
-        if(id === 'workshop') loadWorkshopItem();
-        if(id === 'quiz') loadQuiz();
+
+        // Init specifics
+        if(id === 'workshop') initWorkshop();
+        if(id === 'dictation') initDictation();
+        if(id === 'quiz') initQuiz();
     }
 
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }
-
-    // --- Workshop Logic ---
-    const exercises = [
-        { es: "¿Ella trabajó ayer?", words: ["Did", "she", "work", "yesterday", "?"], correct: "Did she work yesterday ?" },
-        { es: "Yo no estaba feliz.", words: ["I", "wasn't", "happy", "."], correct: "I wasn't happy ." },
-        { es: "¿Dónde viviste?", words: ["Where", "did", "you", "live", "?"], correct: "Where did you live ?" },
-        { es: "Ellos caminaron al parque.", words: ["They", "walked", "to", "the", "park", "."], correct: "They walked to the park ." },
-        { es: "Él no llamó.", words: ["He", "didn't", "call", "."], correct: "He didn't call ." }
+    // --- WORKSHOP LOGIC ---
+    const wsData = [
+        { es: "Yo no trabajé ayer.", words: ["I", "didn't", "work", "yesterday", "."], correct: "I didn't work yesterday ." },
+        { es: "¿Dónde fuiste?", words: ["Where", "did", "you", "go", "?"], correct: "Where did you go ?" },
+        { es: "Ella estudió mucho.", words: ["She", "studied", "a", "lot", "."], correct: "She studied a lot ." },
+        { es: "Nosotros estábamos felices.", words: ["We", "were", "happy", "."], correct: "We were happy ." },
+        { es: "Él no estaba en casa.", words: ["He", "wasn't", "at", "home", "."], correct: "He wasn't at home ." }
     ];
-    let currentEx = 0;
+    let wsIdx = 0;
 
-    function loadWorkshopItem() {
-        const ex = exercises[currentEx];
-        document.getElementById('targetMeaning').innerText = ex.es;
-        document.getElementById('dropZone').innerHTML = '';
-        document.getElementById('feedbackBox').style.display = 'none';
+    function initWorkshop() {
+        const data = wsData[wsIdx];
+        document.getElementById('targetSentence').innerText = data.es;
+        const bank = document.getElementById('chipBank');
+        const drop = document.getElementById('dropArea');
+        const fb = document.getElementById('wsFeedback');
         
-        const dock = document.getElementById('wordDock');
-        dock.innerHTML = '';
+        bank.innerHTML = ''; drop.innerHTML = ''; fb.style.display = 'none';
         
-        // Shuffle words
-        const shuffled = [...ex.words].sort(() => Math.random() - 0.5);
+        // Shuffle
+        let chips = [...data.words].sort(() => Math.random() - 0.5);
         
-        shuffled.forEach(word => {
+        chips.forEach(word => {
             const chip = document.createElement('div');
-            chip.className = 'word-chip';
+            chip.className = 'chip';
             chip.innerText = word;
-            chip.onclick = () => moveWord(chip);
-            dock.appendChild(chip);
+            chip.onclick = () => {
+                if(chip.parentElement === bank) {
+                    drop.appendChild(chip);
+                    speak(word);
+                } else {
+                    bank.appendChild(chip);
+                }
+            };
+            bank.appendChild(chip);
         });
     }
 
-    function moveWord(chip) {
-        const zone = document.getElementById('dropZone');
-        const dock = document.getElementById('wordDock');
-        if(chip.parentElement === dock) {
-            zone.appendChild(chip);
-            speak(chip.innerText);
-        } else {
-            dock.appendChild(chip);
-        }
-    }
-
-    function checkStructure() {
-        const currentWords = Array.from(document.getElementById('dropZone').children).map(c => c.innerText).join(' ');
-        const correct = exercises[currentEx].correct;
-        const fb = document.getElementById('feedbackBox');
+    function checkWorkshop() {
+        const attempt = Array.from(document.getElementById('dropArea').children).map(c => c.innerText).join(' ');
+        const correct = wsData[wsIdx].correct;
+        const fb = document.getElementById('wsFeedback');
         
         fb.style.display = 'block';
-        if(currentWords === correct) {
-            fb.className = 'feedback-box feedback-good';
-            fb.innerHTML = '<i class="fas fa-check"></i> ¡Perfecto! Estructura correcta.';
+        if(attempt === correct) {
+            fb.className = 'feedback good';
+            fb.innerHTML = '<b>Correct!</b> Structure verified.';
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
             setTimeout(() => {
-                currentEx = (currentEx + 1) % exercises.length;
-                loadWorkshopItem();
+                wsIdx = (wsIdx + 1) % wsData.length;
+                initWorkshop();
             }, 2000);
         } else {
-            fb.className = 'feedback-box feedback-bad';
-            fb.innerHTML = '<i class="fas fa-times"></i> Incorrecto. Revisa el orden o los auxiliares.';
+            fb.className = 'feedback bad';
+            fb.innerHTML = '<b>Incorrect.</b> Check the order.';
+            speak("Try again");
+        }
+    }
+    
+    function resetWorkshop() { initWorkshop(); }
+
+    // --- DICTATION LOGIC ---
+    const dicSentences = [
+        "She cooked dinner last night",
+        "They didn't play soccer",
+        "Where did you buy that?",
+        "I was very tired yesterday",
+        "He stopped the car"
+    ];
+    let dicIdx = 0;
+
+    function initDictation() {
+        document.getElementById('dictInput').value = '';
+        document.getElementById('dictFeedback').style.display = 'none';
+    }
+
+    function playDictation() {
+        speak(dicSentences[dicIdx]);
+    }
+
+    function checkDictation() {
+        const val = document.getElementById('dictInput').value.trim();
+        const target = dicSentences[dicIdx];
+        const fb = document.getElementById('dictFeedback');
+        
+        fb.style.display = 'block';
+        
+        // Remove punctuation for easier match
+        const cleanVal = val.replace(/[.,?]/g, '').toLowerCase();
+        const cleanTarget = target.replace(/[.,?]/g, '').toLowerCase();
+
+        if(cleanVal === cleanTarget) {
+            fb.className = 'feedback good';
+            fb.innerHTML = `<b>Perfect!</b> "${target}"`;
+            confetti({ particleCount: 50, spread: 50 });
+            setTimeout(() => {
+                dicIdx = (dicIdx + 1) % dicSentences.length;
+                initDictation();
+            }, 2000);
+        } else {
+            fb.className = 'feedback bad';
+            fb.innerHTML = `<b>Not quite.</b> Listen again.`;
         }
     }
 
-    function resetWorkshop() { loadWorkshopItem(); }
-
-    // --- Quiz Logic ---
-    const quizData = [
-        { q: "Where ____ you yesterday?", opts: ["did", "was", "were"], a: "were" },
-        { q: "I ____ play video games.", a: "didn't", opts: ["didn't", "wasn't", "not"] },
-        { q: "____ she call you?", a: "Did", opts: ["Was", "Did", "Were"] },
-        { q: "He ____ at the party.", a: "wasn't", opts: ["didn't", "wasn't", "weren't"] },
-        { q: "What did you ____?", a: "eat", opts: ["ate", "eat", "eated"] }
+    // --- QUIZ LOGIC ---
+    const quizQ = [
+        { q: "I ____ (watch) TV last night.", opts: ["watched", "watch", "watchd"], a: "watched" },
+        { q: "Where ____ (be) you yesterday?", opts: ["did", "was", "were"], a: "were" },
+        { q: "She ____ (not/go) to the party.", opts: ["didn't went", "didn't go", "no went"], a: "didn't go" },
+        { q: "____ (do) you like the movie?", opts: ["Did", "Were", "Was"], a: "Did" },
+        { q: "They ____ (stop) at the red light.", opts: ["stoped", "stopped", "stop"], a: "stopped" },
+        { q: "We ____ (study) for the exam.", opts: ["studyed", "studied", "studid"], a: "studied" },
+        { q: "He ____ (be) very hungry.", opts: ["were", "did", "was"], a: "was" },
+        { q: "What did you ____ (eat)?", opts: ["ate", "eat", "eated"], a: "eat" },
+        { q: "I ____ (try) to call you.", opts: ["tryed", "tried", "triyed"], a: "tried" },
+        { q: "It ____ (not/rain) yesterday.", opts: ["didn't rain", "didn't rained", "wasn't rain"], a: "didn't rain" }
     ];
+    let qIdx = 0;
+    let score = 0;
 
-    function loadQuiz() {
-        const container = document.getElementById('quiz-container');
-        container.innerHTML = '';
+    function initQuiz() {
+        qIdx = 0; score = 0;
+        document.getElementById('quiz-ui').style.display = 'block';
+        document.getElementById('quiz-results').style.display = 'none';
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        if(qIdx >= quizQ.length) return finishQuiz();
         
-        quizData.forEach((item, idx) => {
-            const div = document.createElement('div');
-            div.style.marginBottom = "20px";
-            div.style.padding = "20px";
-            div.style.border = "1px solid var(--border-color)";
-            div.style.borderRadius = "15px";
-            
-            div.innerHTML = `<p style="font-weight:700; font-size:1.1rem; margin-bottom:10px;">${idx+1}. ${item.q}</p>`;
-            
-            item.opts.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.innerText = opt;
-                btn.style.marginRight = "10px";
-                btn.style.padding = "10px 20px";
-                btn.style.borderRadius = "10px";
-                btn.style.border = "1px solid var(--border-color)";
-                btn.style.background = "var(--surface-color)";
-                btn.style.cursor = "pointer";
-                
-                btn.onclick = () => {
-                    if(opt === item.a) {
-                        btn.style.background = "var(--did-mode)";
-                        btn.style.color = "white";
-                    } else {
-                        btn.style.background = "var(--alert)";
-                        btn.style.color = "white";
-                    }
-                };
-                div.appendChild(btn);
-            });
-            container.appendChild(div);
+        const data = quizQ[qIdx];
+        document.getElementById('questionBox').innerHTML = `<h2 style="text-align:center;">${qIdx+1}. ${data.q}</h2>`;
+        
+        const optsBox = document.getElementById('optionsBox');
+        optsBox.innerHTML = '';
+        
+        data.opts.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-action secondary';
+            btn.style.marginTop = '10px';
+            btn.innerText = opt;
+            btn.onclick = () => handleAnswer(opt, data.a);
+            optsBox.appendChild(btn);
         });
-        
-        const finishBtn = document.createElement('button');
-        finishBtn.className = "btn-primary btn-verify";
-        finishBtn.innerText = "Finalizar Examen";
-        finishBtn.onclick = () => {
-            document.getElementById('quiz-container').style.display = 'none';
-            document.getElementById('quiz-result').style.display = 'block';
-            confetti();
-        };
-        container.appendChild(finishBtn);
+
+        // Bar
+        const pct = (qIdx / quizQ.length) * 100;
+        document.getElementById('quizProgress').style.width = `${pct}%`;
+    }
+
+    function handleAnswer(selected, correct) {
+        if(selected === correct) score++;
+        qIdx++;
+        renderQuestion();
+    }
+
+    function finishQuiz() {
+        document.getElementById('quiz-ui').style.display = 'none';
+        document.getElementById('quiz-results').style.display = 'block';
+        document.getElementById('finalScore').innerText = `Score: ${score} / 10`;
+        if(score >= 8) confetti();
     }
 
 </script>
